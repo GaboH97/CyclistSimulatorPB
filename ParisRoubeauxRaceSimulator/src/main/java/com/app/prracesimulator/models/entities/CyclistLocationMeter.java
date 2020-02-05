@@ -1,7 +1,13 @@
-package com.app.cyclistsimulatorpb.models.entities;
+package com.app.prracesimulator.models.entities;
 
 import java.util.ArrayList;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CyclistLocationMeter {
 
 	/**
@@ -11,26 +17,5 @@ public class CyclistLocationMeter {
 	 * 1
 	 */
 	private int meter;
-	private ArrayList<CyclistLocation> cyclistsLocation;
-	
-	public int getMeter() {
-		return meter;
-	}
-	public void setMeter(int meter) {
-		this.meter = meter;
-	}
-	public ArrayList<CyclistLocation> getCyclistsLocation() {
-		return cyclistsLocation;
-	}
-	public void setCyclistsLocation(ArrayList<CyclistLocation> cyclistsLocation) {
-		this.cyclistsLocation = cyclistsLocation;
-	}
-	public CyclistLocationMeter(int meter, ArrayList<CyclistLocation> cyclistsLocation) {
-		super();
-		this.meter = meter;
-		this.cyclistsLocation = cyclistsLocation;
-	}
-	
-	
-	
+	private ArrayList<CyclistLocation> cyclistsLocation;	
 }

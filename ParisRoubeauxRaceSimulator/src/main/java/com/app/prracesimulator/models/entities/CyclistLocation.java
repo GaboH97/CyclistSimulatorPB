@@ -1,4 +1,8 @@
-package com.app.cyclistsimulatorpb.models.entities;
+package com.app.prracesimulator.models.entities;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * determina la ubicacion de un ciclista tando del peloton como la distancia que hay 
@@ -6,6 +10,9 @@ package com.app.cyclistsimulatorpb.models.entities;
  * @author jacr
  *
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CyclistLocation implements Comparable<CyclistLocation>{
 
 	/**
@@ -17,31 +24,7 @@ public class CyclistLocation implements Comparable<CyclistLocation>{
 	private Cyclist cyclist;
 	private int locationInPeloton;
 	private int clossenesToBestNextInMeters;
-	
-	public Cyclist getCyclist() {
-		return cyclist;
-	}
-	public void setCyclist(Cyclist cyclist) {
-		this.cyclist = cyclist;
-	}
-	public int getLocationInPeloton() {
-		return locationInPeloton;
-	}
-	public void setLocationInPeloton(int locationInPeloton) {
-		this.locationInPeloton = locationInPeloton;
-	}
-	public int getClossenesToBestNextInMeters() {
-		return clossenesToBestNextInMeters;
-	}
-	public void setClossenesToBestNextInMeters(int clossenesToBestNextInMeters) {
-		this.clossenesToBestNextInMeters = clossenesToBestNextInMeters;
-	}
-	public CyclistLocation(Cyclist cyclist, int locationInPeloton, int clossenesToBestNextInMeters) {
-		super();
-		this.cyclist = cyclist;
-		this.locationInPeloton = locationInPeloton;
-		this.clossenesToBestNextInMeters = clossenesToBestNextInMeters;
-	}
+
 	@Override
 	public int compareTo(CyclistLocation o) {
 		if(this.locationInPeloton > o.getLocationInPeloton()) {

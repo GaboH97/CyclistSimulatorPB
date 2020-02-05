@@ -1,4 +1,4 @@
-package com.app.cyclistsimulatorpb.models.entities;
+package com.app.prracesimulator.models.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +14,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cyclist {
-
+    
+    
+    public static int MIN_WEIGHT = 50; //En Kilogramos
+    public static int MAX_WEIGHT = 90; //En Kilogramos
+    public static int MIN_FITNESS_FACTOR = 50; //En Kilogramos
+    public static int MAX_FITNESS_FACTOR = 90; //En Kilogramos
+    public static int MIN_FATIGUE_FACTOR = 50; //En Kilogramos
+    public static int MAX_FATIGUE_FACTOR = 90; //En Kilogramos
+    
     private int id;
     private double fiveSecsPower;
     private double oneMinPower;

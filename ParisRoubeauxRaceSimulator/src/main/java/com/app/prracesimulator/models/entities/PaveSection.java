@@ -1,4 +1,4 @@
-package com.app.cyclistsimulatorpb.models.entities;
+package com.app.prracesimulator.models.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Pave {
+public class PaveSection {
 
 	private int id;
-	private int startMeter;
-	private int lenghtInMeters;
-	private int dificulty;
+	private int start;
+	private int length; //In meters
+	private int difficulty;
         
 }

@@ -1,8 +1,18 @@
-package com.app.cyclistsimulatorpb.models.entities;
+package com.app.prracesimulator.models.entities;
 
+import com.app.cyclistsimulatorpb.util.DataExtractor;
+import com.app.prracesimulator.util.Constants;
+import com.app.prracesimulator.util.CyclistSequence;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
+ *
  * clase que determina la carrera en esta se almacenan los ciclistas que
  * compiten, los segmentos de pave y el historico de la ubicacion de los
  * ciclistas esto con el fin de graficarlos posteriormente
@@ -10,18 +20,79 @@ import java.util.ArrayList;
  * @author jacr
  *
  */
+@Getter
+@Setter
 public class Race {
 
-    private ArrayList<Cyclist> cyclists;
-    private ArrayList<Pave> paveSegments;
+    private ArrayList<Cyclist> racers;
+    private ArrayList<PaveSection> paveSegments;
     private ArrayList<CyclistLocationMeter> historicalLocationsForEachMeter;
-    
-    
 
     public Race() {
-        cyclists = new ArrayList<Cyclist>();
-        paveSegments = new ArrayList<Pave>();
-        this.race();
+        racers = new ArrayList<>();
+        paveSegments = new ArrayList<>();
+        //this.race();
+        setUpRace();
+    }
+
+    public void setUpRace() {
+        setUpRacers();
+        setUpPaveSections();
+    }
+
+    /**
+     * Método que crea los ciclistas con valores pseudoaleatorios normalmente
+     * distribuidos en lo que respecta a atributos de peso, factor de fitness y
+     * fatiga
+     */
+    public void setUpRacers() {
+
+        List<List<Double>> maxPowOutputValuesMatrix = DataExtractor.readFromCSV(
+                Constants.MAX_POW_OUTPUT_FILE_PATH
+        );
+
+        Random rand = new Random();
+
+        for (int i = 0; i < RaceConstants.NUMBER_OF_CYCLISTS; i++) {
+
+            List<Double> maxPowValues = maxPowOutputValuesMatrix.get(
+                    rand.nextInt(maxPowOutputValuesMatrix.size())
+            );
+            double fiveSecsPower = maxPowValues.get(0);
+            double oneMinPower = maxPowValues.get(1);
+            double fiveMinPower = maxPowValues.get(2);
+            double oneHourPower = maxPowValues.get(3);
+
+            racers.add(new Cyclist(CyclistSequence.getNextInt(),
+                    fiveSecsPower,
+                    oneMinPower,
+                    fiveMinPower,
+                    oneHourPower,
+                    rand.ints(Cyclist.MIN_WEIGHT, (Cyclist.MAX_WEIGHT + 1)).findFirst().getAsInt(),
+                    rand.ints(Cyclist.MIN_FITNESS_FACTOR, (Cyclist.MAX_FITNESS_FACTOR + 1)).findFirst().getAsInt(),
+                    rand.ints(Cyclist.MIN_FATIGUE_FACTOR, (Cyclist.MAX_FATIGUE_FACTOR + 1)).findFirst().getAsInt())
+            );
+        }
+
+    }
+
+    /**
+     * Método que crea instancias de segmentos de Pavé a partir de un archivo
+     * CSV que contiene los datos de dichos segmentos
+     */
+    public void setUpPaveSections() {
+
+        List<List<Double>> paveDataMatrix = DataExtractor.readFromCSV(
+                Constants.PAVE_SECTIONS_DATA_FILE_PATH
+        );
+
+        paveDataMatrix.stream().map(paveSectionData -> {
+            int id = paveSectionData.get(0).intValue();
+            int start = paveSectionData.get(1).intValue();
+            int length = paveSectionData.get(2).intValue();
+            int difficulty = paveSectionData.get(3).intValue();
+            return new PaveSection(id, start, length, difficulty);
+        }).forEach(paveSegments::add);
     }
 
     /**
@@ -38,21 +109,22 @@ public class Race {
         locateCyclistStart();// se ubican a los ciclistas en la linea de salida
         // se recorre cada uno de los metros que tiene la carrera,
         // se ira avanzando de metro en metro
-        for (int i = 0; i < ConstantsUtil.RACE_LENGTH; i++) {
+        for (int i = 0; i < RaceConstants.RACE_LENGTH; i++) {
             this.historicalLocationsForEachMeter.add(new CyclistLocationMeter(i, raceNextMeter(historicalLocationsForEachMeter.get(historicalLocationsForEachMeter.size()).getCyclistsLocation())));
         }
     }
 
     /**
      * metodo que crea la ubicacion de todos los ciclistas al inicio de la
-     * carrera en la ubicacion metro cero y con virtualmente 0 metros de
-     * distancia entre ellos
+     * carrera en la ubicacion metro cero y con 0 metros de distancia entre
+     * ellos
      */
     private void locateCyclistStart() {
-        ArrayList<CyclistLocation> locations = new ArrayList<CyclistLocation>();
-        for (Cyclist cyclist : cyclists) {
-            locations.add(new CyclistLocation(cyclist, cyclist.getId(), 0));
-        }
+
+        List<CyclistLocation> locations = racers.stream().map(
+                racer -> new CyclistLocation(racer, racer.getId(), 0)
+        ).collect(Collectors.toList());
+
     }
 
     /**
@@ -64,7 +136,8 @@ public class Race {
      * @return
      */
     private ArrayList<CyclistLocation> raceNextMeter(ArrayList<CyclistLocation> locations) {
-        ArrayList<CyclistLocation> newLocations = new ArrayList<CyclistLocation>();//aca se guardaran las nuevas ubicaciones tras correr el metro
+        ArrayList<CyclistLocation> newLocations = new ArrayList<CyclistLocation>();
+//aca se guardaran las nuevas ubicaciones tras correr el metro
         /* Para cada una de las ubicaciones de los ciclistas se debe determinar cuanto se debe avanzar 
 		 * teniendo en cuenta los valores de fatiga, fitness y los perfiles de poder de cada uno de ellos
 		 * y se debe avanzar hasta que se complete la carrera
@@ -84,33 +157,5 @@ public class Race {
         for (int i = 0; i < locations.size(); i++) {
         }
         return null;
-    }
-
-    // ---Metodos de inicializacion de objetos, (ciclistas y segmentos de pave)---
-    /**
-     * se crean los ciclistas deacuerdo al numero de ciclistas en la carrera
-     */
-    public void createCyclists() {
-        for (int i = 0; i < ConstantsUtil.NUMBER_CYCLISTS; i++) {
-            cyclists.add(new Cyclist());
-        }
-    }
-
-    /**
-     * se crean todos los segmentos de pave deacuerdo a la tabla
-     *
-     */
-    public void createPaveSegments() {
-        paveSegments.add(new Pave(29, 96500, 2200, 3));
-        paveSegments.add(new Pave(28, 103500, 1800, 3));
-        paveSegments.add(new Pave(27, 110000, 3700, 4));
-        paveSegments.add(new Pave(26, 112500, 3000, 3));
-        paveSegments.add(new Pave(25, 117000, 800, 2));
-        paveSegments.add(new Pave(24, 124500, 2300, 3));
-        paveSegments.add(new Pave(23, 134500, 1600, 3));
-        paveSegments.add(new Pave(22, 137500, 2500, 3));
-        paveSegments.add(new Pave(21, 140500, 1600, 3));
-        paveSegments.add(new Pave(20, 153500, 2500, 3));
-        // se deben agregar los demas segmentos
     }
 }
