@@ -109,6 +109,9 @@ public class Race {
         locateCyclistStart();// se ubican a los ciclistas en la linea de salida
         // se recorre cada uno de los metros que tiene la carrera,
         // se ira avanzando de metro en metro
+        /**
+         * 
+         */
         for (int i = 0; i < RaceConstants.RACE_LENGTH; i++) {
             this.historicalLocationsForEachMeter.add(new CyclistLocationMeter(i, raceNextMeter(historicalLocationsForEachMeter.get(historicalLocationsForEachMeter.size()).getCyclistsLocation())));
         }
