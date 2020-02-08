@@ -3,7 +3,10 @@ package com.app.prracesimulator.models.entities;
 import com.app.cyclistsimulatorpb.util.DataExtractor;
 import com.app.prracesimulator.util.Constants;
 import com.app.prracesimulator.util.CyclistSequence;
+
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -31,10 +34,14 @@ public class Race {
     public Race() {
         racers = new ArrayList<>();
         paveSegments = new ArrayList<>();
-        //this.race();
+        historicalLocationsForEachMeter = new ArrayList<>();
         setUpRace();
+        this.race();
     }
 
+    /**
+     * Método que da la configuración inicial de la carrera
+     */
     public void setUpRace() {
         setUpRacers();
         setUpPaveSections();
@@ -70,7 +77,10 @@ public class Race {
                     oneHourPower,
                     rand.ints(Cyclist.MIN_WEIGHT, (Cyclist.MAX_WEIGHT + 1)).findFirst().getAsInt(),
                     rand.ints(Cyclist.MIN_FITNESS_FACTOR, (Cyclist.MAX_FITNESS_FACTOR + 1)).findFirst().getAsInt(),
-                    rand.ints(Cyclist.MIN_FATIGUE_FACTOR, (Cyclist.MAX_FATIGUE_FACTOR + 1)).findFirst().getAsInt())
+                    rand.ints(Cyclist.MIN_FATIGUE_FACTOR, (Cyclist.MAX_FATIGUE_FACTOR + 1)).findFirst().getAsInt(),
+                    0.0,
+                    new Point2D.Double(0,1)
+                    )
             );
         }
 
@@ -112,9 +122,9 @@ public class Race {
         /**
          * 
          */
-        for (int i = 0; i < RaceConstants.RACE_LENGTH; i++) {
-            this.historicalLocationsForEachMeter.add(new CyclistLocationMeter(i, raceNextMeter(historicalLocationsForEachMeter.get(historicalLocationsForEachMeter.size()).getCyclistsLocation())));
-        }
+//        for (int i = 0; i < RaceConstants.RACE_LENGTH; i++) {
+//            this.historicalLocationsForEachMeter.add(new CyclistLocationMeter(i, raceNextMeter(historicalLocationsForEachMeter.get(historicalLocationsForEachMeter.size()).getCyclistsLocation())));
+//        }
     }
 
     /**
@@ -160,5 +170,12 @@ public class Race {
         for (int i = 0; i < locations.size(); i++) {
         }
         return null;
+    }
+
+    /**
+     * Método organiza los ciclistas de acuerdo a su posición en la carrera
+     */
+    public void updateCyclistRankingPositions(){
+        this.racers.sort(Comparator.comparing(c -> c.getLocation().getX()));
     }
 }

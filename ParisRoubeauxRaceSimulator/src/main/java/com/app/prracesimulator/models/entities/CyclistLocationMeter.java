@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class CyclistLocationMeter {
 
 	/**
-	 * clase que determina por cada metro de los 258000 kms de la carrera 
+	 * clase que determina por cada metro de los 258000m de la carrera
 	 * la ubicacion de todos los ciclistas... para cuando se llegue al metro 258000
 	 * el ganador de la carrera sera el que tenga el valor de ubicacion en el peloton
 	 * 1

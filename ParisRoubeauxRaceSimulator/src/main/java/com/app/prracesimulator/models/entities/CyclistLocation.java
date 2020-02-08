@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CyclistLocation implements Comparable<CyclistLocation>{
+public class CyclistLocation{
 
 	/**
 	 * es importante aclarar que cada vez que se haga una instancia de esta clase
@@ -22,15 +22,7 @@ public class CyclistLocation implements Comparable<CyclistLocation>{
 	 * anteriores que han ido teniendo durante la carrera
 	 */
 	private Cyclist cyclist;
+	//TODO Comparar por este atributo;
 	private int locationInPeloton;
 	private int clossenesToBestNextInMeters;
-
-	@Override
-	public int compareTo(CyclistLocation o) {
-		if(this.locationInPeloton > o.getLocationInPeloton()) {
-			return 1;
-		}else {
-			return 0;
-		}
-	}
 }
