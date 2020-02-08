@@ -6,6 +6,7 @@
 package com.app.prracesimulator.util;
 
 /**
+ * Clase que contiene las constantes del sistema
  *
  * @author Gabriel Huertas <gabriel970826@gmail.com>
  */

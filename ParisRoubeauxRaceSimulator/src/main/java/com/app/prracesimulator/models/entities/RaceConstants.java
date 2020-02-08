@@ -1,5 +1,8 @@
 package com.app.prracesimulator.models.entities;
 
+/**
+ *
+ */
 public class RaceConstants {
 
     /**

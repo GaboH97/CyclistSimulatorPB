@@ -5,12 +5,11 @@ import com.app.prracesimulator.util.Constants;
 import com.app.prracesimulator.util.CyclistSequence;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import com.app.prracesimulator.util.RaceTimeTicker;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +25,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Race {
+
+    private RaceTimeTicker raceTimeTicker;
 
     private ArrayList<Cyclist> racers;
     private ArrayList<PaveSection> paveSegments;
@@ -50,7 +51,11 @@ public class Race {
     /**
      * Método que crea los ciclistas con valores pseudoaleatorios normalmente
      * distribuidos en lo que respecta a atributos de peso, factor de fitness y
-     * fatiga
+     * fatiga.
+     * Los valores de potencia están dados por la tabla unificada de valores de máxima potencia de los cuales se tiene
+     * en cuenta solo aquellos que corresponden a ciclistas 'World Class' y 'Exceptional'
+     *
+     * @see <a href="https://www.cyclinganalytics.com/blog/2012/06/watts-kg-on-the-power-curve">Tabla de Potencias</a
      */
     public void setUpRacers() {
 
@@ -78,12 +83,12 @@ public class Race {
                     rand.ints(Cyclist.MIN_WEIGHT, (Cyclist.MAX_WEIGHT + 1)).findFirst().getAsInt(),
                     rand.ints(Cyclist.MIN_FITNESS_FACTOR, (Cyclist.MAX_FITNESS_FACTOR + 1)).findFirst().getAsInt(),
                     rand.ints(Cyclist.MIN_FATIGUE_FACTOR, (Cyclist.MAX_FATIGUE_FACTOR + 1)).findFirst().getAsInt(),
-                    0.0,
-                    new Point2D.Double(0,1)
+                    new Point2D.Double(0,1),
+                    1.0,
+                    2.0
                     )
             );
         }
-
     }
 
     /**
@@ -172,10 +177,44 @@ public class Race {
         return null;
     }
 
+
     /**
      * Método organiza los ciclistas de acuerdo a su posición en la carrera
      */
     public void updateCyclistRankingPositions(){
         this.racers.sort(Comparator.comparing(c -> c.getLocation().getX()));
+    }
+
+    /**
+     * Método que evalua si el ciclista se encuentra en un tramo de pavé
+     * @param cyclist
+     * @return
+     */
+    public boolean isInPaveSection(Cyclist cyclist){
+        Point2D.Double cyclistLoc = cyclist.getLocation();
+        return paveSegments.stream().anyMatch(paveSection -> paveSection.getStart() <= cyclistLoc.getX() && cyclistLoc.getX() <= paveSection.getEnd());
+    }
+
+    /**
+     * Método que identifica el segmento de pavé en el cual se encuentra el ciclista
+     * @param cyclist
+     * @return
+     */
+    public Optional<PaveSection> getPaveSectionCyclistIsIn(Cyclist cyclist){
+        Point2D.Double cyclistLoc = cyclist.getLocation();
+        return paveSegments.stream()
+                .filter(
+                        paveSection -> paveSection.getStart() <= cyclistLoc.getX() && cyclistLoc.getX() <= paveSection.getEnd()
+                ).findFirst();
+    }
+
+    /**
+     * Método que evalua si la carrera ha terminado, esto sucede solo si todos los participantes de la carrera
+     * han pasado la línea de meta
+     *
+     * @return
+     */
+    public boolean hasFinished(){
+        return this.racers.stream().allMatch(racer -> racer.getLocation().getX() >= RaceConstants.RACE_LENGTH);
     }
 }

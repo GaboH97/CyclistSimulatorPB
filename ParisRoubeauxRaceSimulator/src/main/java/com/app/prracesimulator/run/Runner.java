@@ -5,15 +5,14 @@
  */
 package com.app.prracesimulator.run;
 
-import com.app.cyclistsimulatorpb.util.DataExtractor;
 import com.app.prracesimulator.models.entities.Cyclist;
 import com.app.prracesimulator.models.entities.Race;
+import com.app.prracesimulator.util.EditablePeriodTimerTask;
 import com.app.prracesimulator.util.RaceTimeTicker;
 
 import java.awt.geom.Point2D;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Clase principal que ejecuta la simulación
@@ -23,16 +22,20 @@ import java.util.concurrent.TimeUnit;
 public class Runner {
 
     public static void main(String[] args) {
-//        Race race = new Race();
-//        System.out.println("CICLISTAS");
-//        race.getRacers().forEach(System.out::println);
-//        System.out.println("SEGMENTOS DE PAVÉ");
-//        race.getPaveSegments().forEach(System.out::println);
+        Race race = new Race();
+        System.out.println("CICLISTAS");
+        race.getRacers().forEach(System.out::println);
+        System.out.println("SEGMENTOS DE PAVÉ");
+        race.getPaveSegments().forEach(System.out::println);
 
         Timer timer = new Timer();
         RaceTimeTicker raceTimeTicker = RaceTimeTicker.getInstance();
-        Cyclist c = new Cyclist(1,0,0,0,0,0,0,0,2,new Point2D.Double(0,1));
-        TimerTask timerTask = new TimerTask() {
+        Cyclist c = new Cyclist(1,0,0,0,0,0,0,2,new Point2D.Double(0,1),2,1);
+
+
+        //DEFINE LA TAREA A REALIZAR
+
+        TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 c.move(raceTimeTicker.getTime());
@@ -40,7 +43,13 @@ public class Runner {
                 System.out.println(c.getLocation());
             }
         };
-        timer.schedule(timerTask,1, TimeUnit.SECONDS.toMillis(RaceTimeTicker.getDeltha()));
+
+        //EL PARÁMETRO QUE ENTRA EN EL CONSTRUCTUR INDICA LA VELOCIDAD CON LA QUE SE VA EJECUTAR EL PROGRAMA
+        //PARA ESTE CASO ES DE 500L
+        EditablePeriodTimerTask timerTask = new EditablePeriodTimerTask(task, () -> 500L);
+        timerTask.run();
+
+ //       timer.schedule(timerTask,1, TimeUnit.SECONDS.toMillis(RaceTimeTicker.getDeltha()));
 
     }
 }

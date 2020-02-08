@@ -6,17 +6,21 @@ import lombok.NoArgsConstructor;
 
 /**
  * clase que determina los segmentos de pave deacuerdo a la tabla de segemntos
- * @author jacr
  *
+ * @author jacr
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaveSection {
 
-	private int id;
-	private int start;
-	private int length; //In meters
-	private int difficulty;
-        
+    private int id;
+    private int start;
+    private int length; //In meters
+    private int difficulty;
+
+    public int getEnd() {
+        return start + length;
+    }
+
 }
