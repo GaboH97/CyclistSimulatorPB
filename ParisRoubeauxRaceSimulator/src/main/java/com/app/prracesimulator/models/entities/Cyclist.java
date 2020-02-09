@@ -2,9 +2,11 @@ package com.app.prracesimulator.models.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.ToString;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
+import java.beans.Transient;
 import java.util.Random;
 
 /**
@@ -18,14 +20,19 @@ import java.util.Random;
 public class Cyclist implements Movable{
     
     private int id;
+    @ToString.Exclude 
     private double fiveSecsPower;
+    @ToString.Exclude 
     private double oneMinPower;
+    @ToString.Exclude 
     private double fiveMinPower;
+    @ToString.Exclude 
     private double oneHourPower;
 
     /**
      * Peso en kilogramos
      */
+    @ToString.Exclude 
     private double weight;
     /**
      * Factor comprendido entre 1.0 y 100.0
@@ -44,6 +51,7 @@ public class Cyclist implements Movable{
     /**
      * En m/s
      */
+    @ToString.Exclude 
     private double velocityMS;
 
     /**

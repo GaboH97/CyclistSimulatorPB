@@ -3,15 +3,11 @@ package com.app.prracesimulator.views;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
-
 import javax.swing.JPanel;
-
 import com.app.prracesimulator.controllers.Controller;
 import com.app.prracesimulator.models.entities.Cyclist;
 import com.app.prracesimulator.models.entities.PaveSection;
-import com.app.prracesimulator.models.entities.Race;
 
 public class RaceAnimationPanel extends JPanel {
 
@@ -64,7 +60,7 @@ public class RaceAnimationPanel extends JPanel {
 			g2D.drawOval((int) cyclist.getLocation().getX(), // ubicacion en x del ovalo
 					(int) cyclist.getLocation().getY(),//ubicacion en y del ovalo
 						10,//ancho 
-					10);// alto
+					100);// alto
 
 		}
 	}

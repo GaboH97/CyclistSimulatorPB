@@ -20,7 +20,7 @@ import com.app.prracesimulator.models.entities.Race;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-	RaceAnimationPanel rap;
+	private RaceAnimationPanel rap;
 	
     /**
 	 * 
