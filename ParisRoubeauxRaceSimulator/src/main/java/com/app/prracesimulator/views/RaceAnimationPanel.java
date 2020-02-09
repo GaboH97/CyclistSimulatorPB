@@ -1,14 +1,27 @@
 package com.app.prracesimulator.views;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import com.app.prracesimulator.controllers.Controller;
 import com.app.prracesimulator.models.entities.Cyclist;
 import com.app.prracesimulator.models.entities.PaveSection;
+import com.app.prracesimulator.models.entities.RaceConstants;
 
+/**
+ * Panel que contiene el canvas de la carrera
+ * @author Yuliana
+ *
+ */
 public class RaceAnimationPanel extends JPanel {
 
 	public ArrayList<Cyclist> racers;
@@ -21,20 +34,36 @@ public class RaceAnimationPanel extends JPanel {
 
 	public RaceAnimationPanel(Controller controller) {
 		super();
-		setBackground(Color.white);		
+		setBackground(Color.red);		
 		this.racers = controller.getRace().getRacers();
 		this.paveSegments = controller.getRace().getPaveSegments();
+		this.initComponents();
 	}
 
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		Graphics2D g2D = (Graphics2D) g;
-		//hay que pintar el terreno de la carrera
-		this.paintGroundRace(g2D);
-		//aca se pintan los ciclistas
-		paintRacers(g2D);		
+	private void initComponents() {
+		Toolkit t = Toolkit.getDefaultToolkit();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int sizeX = 1200 ;
+		int sizeY = 400 ;
+		System.out.println("ancho: " + sizeX + " aLTO: "+ sizeY);
+		RaceSketch raceSketch =  new RaceSketch();
+		this.setPreferredSize(new Dimension(sizeX, sizeY));
+		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		raceSketch.setPreferredSize(new Dimension(sizeX,sizeY - 10));
+		this.add(raceSketch);
+		this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		this.setPreferredSize(new Dimension(sizeX,sizeY));
 	}
+
+//	@Override
+//	public void paint(Graphics g) {
+//		super.paint(g);
+//		Graphics2D g2D = (Graphics2D) g;
+//		//hay que pintar el terreno de la carrera
+//		this.paintGroundRace(g2D);
+//		//aca se pintan los ciclistas
+//		paintRacers(g2D);		
+//	}
 
 	/**
 	 * metodo en el que se pintan los racers deacuerdo a su ubicacion y su estado
