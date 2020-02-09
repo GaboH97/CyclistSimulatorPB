@@ -6,9 +6,11 @@
 package com.app.prracesimulator.views;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
 
 import com.app.prracesimulator.controllers.Actions;
 import com.app.prracesimulator.controllers.Controller;
+import com.app.prracesimulator.models.entities.Cyclist;
 
 /**
  *
@@ -16,6 +18,8 @@ import com.app.prracesimulator.controllers.Controller;
  */
 public class MainWindow extends javax.swing.JFrame {
 
+	RaceAnimationPanel rap;
+	
     /**
 	 * 
 	 */
@@ -31,9 +35,14 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void addComponents(Controller controller) {
     	this.panelContainerDraw.setLayout(new BorderLayout());
-		this.panelContainerDraw.add(new RaceAnimationPanel(controller), BorderLayout.CENTER);
+    	rap = new RaceAnimationPanel(controller);
+		this.panelContainerDraw.add(rap, BorderLayout.CENTER);
 	}
 
+    public void setRacers(ArrayList<Cyclist> racers) {
+    	this.rap.setRacers(racers);
+    }
+    
 	/**
      * 
      * @param controller

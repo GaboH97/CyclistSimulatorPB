@@ -34,7 +34,7 @@ public class Cyclist implements Movable{
     /**
      * Factor comprendido entre 1.0 y 100.0
      */
-    private double fatigueFactor;
+    private double fatigue;
 
     /**
      * Ubicación del ciclista en dos dimensiones (x,y)
@@ -124,7 +124,7 @@ public class Cyclist implements Movable{
         
         //------------------------------------------------------------------
 		this.fitnessFactor = rand.doubles(RaceConstants.MIN_FITNESS, (RaceConstants.MAX_FITNESS)).findFirst().getAsDouble();
-		this.fatigueFactor = rand.doubles(RaceConstants.MIN_FATIGUE_INIT, (RaceConstants.MAX_FATIGUE_INIT)).findFirst().getAsDouble();
+		this.fatigue = rand.doubles(RaceConstants.MIN_FATIGUE_INIT, (RaceConstants.MAX_FATIGUE_INIT)).findFirst().getAsDouble();
 		//TODO MIRAR ESTO
 		this.velocityMS = 0;
 		this.location = new Double(0, 0);
@@ -133,13 +133,13 @@ public class Cyclist implements Movable{
 	}
     
 	
-	public double getVelocityAccordingForm() {
-		double effortThatCanPerform = ((this.getFitnessFactor()-this.getFatigueFactor())/2)+50;
+	public double getVelocityAccordingFormKmH() {
+		double effortThatCanPerform = ((this.getFitnessFactor()-this.getFatigue())/2)+50;
 //		System.out.println("effort" + effortThatCanPerform);
 		double velocityAccordingFormKmH = Math.log10(effortThatCanPerform)*20+20;
 //		System.out.println("velocityAccordingFormKMH " + velocityAccordingFormKmH);
-		this.fatigueFactor += velocityAccordingFormKmH/RaceConstants.TIREDNESS_FACTOR; 
-//		System.out.println("fatigueFactor" + this.fatigueFactor);
+		this.fatigue += velocityAccordingFormKmH/RaceConstants.TIREDNESS_FACTOR; 
+//		System.out.println("fatigue" + this.fatigue);
 		
 		return velocityAccordingFormKmH;
 	}

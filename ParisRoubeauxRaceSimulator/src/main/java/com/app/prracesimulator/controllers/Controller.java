@@ -39,13 +39,13 @@ public class Controller implements ActionListener {
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
-				while (!race.hasFinished()) {
+				if (!race.hasFinished()) {
 					race.getRacers().forEach(cyclist -> {
 						if (cyclist.getCyclistState().equals(CyclistState.RACING)) {
-	                		cyclist.setVelocityMS(cyclist.getVelocityAccordingForm()/3.6);//se divide en 3.6 pues la velocidad esta en km/h y se necesita en m/s
+	                		cyclist.setVelocityMS(cyclist.getVelocityAccordingFormKmH()/3.6);//se divide en 3.6 pues la velocidad esta en km/h y se necesita en m/s
 	                		cyclist.move();
+	                		System.out.println(cyclist);
 	                		if (cyclist.getLocation().getX()>= RaceConstants.RACE_LENGTH && !race.getRacersAtTheEnd().contains(cyclist)) {
-								//acabelo
 	                			cyclist.setCyclistState(CyclistState.FINISHER);
 	                			race.getRacersAtTheEnd().add(cyclist);
 							}
@@ -54,7 +54,7 @@ public class Controller implements ActionListener {
 	                			race.getRacersAtTheEnd().add(cyclist);
 							}
 	                        raceTimeTicker.advance();
-							
+	                        mainWindow.setRacers(race.getRacers());
 	            		}
 					});
 //                    System.out.println("-------------------");
@@ -64,13 +64,8 @@ public class Controller implements ActionListener {
 		// EL PARÁMETRO QUE ENTRA EN EL CONSTRUCTUR INDICA LA VELOCIDAD CON LA QUE SE VA
 		// EJECUTAR EL PROGRAMA
 		// PARA ESTE CASO ES DE 500L
-		EditablePeriodTimerTask timerTask = new EditablePeriodTimerTask(task, () -> 1L);
+		EditablePeriodTimerTask timerTask = new EditablePeriodTimerTask(task, () -> 500L);
 		timerTask.run();
-		
-		
-    	for (Cyclist cyclist : race.getRacersAtTheEnd()) {
-			System.out.println("id: "+cyclist.getId()+ " fatigue: " + cyclist.getFatigueFactor()+ " fitness: " + cyclist.getFitnessFactor() + " pos: "+cyclist.getLocation().getX() + " state: " + cyclist.getCyclistState());
-		}
 	}
 
 	@Override

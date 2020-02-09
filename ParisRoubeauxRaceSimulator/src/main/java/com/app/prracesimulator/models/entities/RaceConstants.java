@@ -46,5 +46,5 @@ public class RaceConstants {
 	public static int MAX_FATIGUE_INIT = 10;
 
     public static double TIREDNESS_FACTOR = 3600;//este factor no es multiplicativo sino de division
-    public static double RESTENESS_FACTOR = 1/1800;
+    public static double RESTENESS_FACTOR = 1800;
 }

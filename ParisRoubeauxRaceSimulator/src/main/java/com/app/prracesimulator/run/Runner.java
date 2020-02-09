@@ -6,6 +6,7 @@
 package com.app.prracesimulator.run;
 
 import com.app.prracesimulator.controllers.Controller;
+import com.app.prracesimulator.models.entities.Cyclist;
 
 /**
  * Clase principal que ejecuta la simulación
@@ -15,6 +16,7 @@ import com.app.prracesimulator.controllers.Controller;
 public class Runner {
 
     public static void main(String[] args) {
-    	new Controller();
+    	Controller c = new Controller();
+    	c.simulate();
     }
 }
