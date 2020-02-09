@@ -1,11 +1,14 @@
 package com.app.prracesimulator.controllers;
 
 import com.app.prracesimulator.models.entities.Cyclist;
-import com.app.prracesimulator.models.entities.CyclistLocation;
+import com.app.prracesimulator.models.entities.CyclistState;
 import com.app.prracesimulator.models.entities.Race;
+import com.app.prracesimulator.models.entities.RaceConstants;
 import com.app.prracesimulator.util.EditablePeriodTimerTask;
 import com.app.prracesimulator.util.RaceTimeTicker;
 import com.app.prracesimulator.views.MainWindow;
+
+import lombok.Data;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,55 +16,71 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * @author : Gabriel Huertas <gabriel970826@gmail.com>
- * Date: 8/02/2020
- * Time: 2:25 p. m.
+ * @author : Gabriel Huertas <gabriel970826@gmail.com> Date: 8/02/2020 Time:
+ *         2:25 p. m.
  */
+@Data
 public class Controller implements ActionListener {
 
-    private Timer timer;
-    private Race race;
-    private MainWindow mainWindow;
-    RaceTimeTicker raceTimeTicker;
+	private Timer timer;
+	private Race race;
+	private MainWindow mainWindow;
+	RaceTimeTicker raceTimeTicker;
 
-    public Controller(){
-        this.race = new Race();
-        this.mainWindow = new MainWindow();
-        this.timer = new Timer();
-        this.raceTimeTicker = RaceTimeTicker.getInstance();
-        this.simulate();
-    }
+	public Controller() {
+		this.race = new Race();
+		this.mainWindow = new MainWindow(this);
+		this.timer = new Timer();
+		this.raceTimeTicker = RaceTimeTicker.getInstance();
+		this.mainWindow.setVisible(true);
+	}
 
-    public void simulate() {
-    	TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-            	for (CyclistLocation cyclistLocation : race.getLocationsInPeloton()) {
-            		Cyclist c = cyclistLocation.getCyclist();
-            		System.out.println(c.toString());
-
-            		c.setVelocity(c.getVelocityAccordingForm()/3.6);//se divide en 3.6 pues la velocidad esta en km/h y se necesita en m/s
-                    c.move();
-                    raceTimeTicker.advance();
-//                    System.out.println(c.getLocation());
-                    System.out.println("-------------------");
+	public void simulate() {
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				while (!race.hasFinished()) {
+					race.getRacers().forEach(cyclist -> {
+						if (cyclist.getCyclistState().equals(CyclistState.RACING)) {
+	                		cyclist.setVelocityMS(cyclist.getVelocityAccordingForm()/3.6);//se divide en 3.6 pues la velocidad esta en km/h y se necesita en m/s
+	                		cyclist.move();
+	                		if (cyclist.getLocation().getX()>= RaceConstants.RACE_LENGTH && !race.getRacersAtTheEnd().contains(cyclist)) {
+								//acabelo
+	                			cyclist.setCyclistState(CyclistState.FINISHER);
+	                			race.getRacersAtTheEnd().add(cyclist);
+							}
+	                		if (cyclist.getVelocityMS()<1 && !race.getRacersAtTheEnd().contains(cyclist)) {
+	                			cyclist.setCyclistState(CyclistState.DEQUALIFIED);
+	                			race.getRacersAtTheEnd().add(cyclist);
+							}
+	                        raceTimeTicker.advance();
+							
+	            		}
+					});
+//                    System.out.println("-------------------");
 				}
-            }
-        };
-        //EL PARÁMETRO QUE ENTRA EN EL CONSTRUCTUR INDICA LA VELOCIDAD CON LA QUE SE VA EJECUTAR EL PROGRAMA
-        //PARA ESTE CASO ES DE 500L
-        EditablePeriodTimerTask timerTask = new EditablePeriodTimerTask(task, () ->500L);
-        timerTask.run();
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        switch (Actions.valueOf(e.getActionCommand())) {
-            case SIMULATE:
-                simulate();
-                break;
-            default:
-                break;
-        }
-    }
+			}
+		};
+		// EL PARÁMETRO QUE ENTRA EN EL CONSTRUCTUR INDICA LA VELOCIDAD CON LA QUE SE VA
+		// EJECUTAR EL PROGRAMA
+		// PARA ESTE CASO ES DE 500L
+		EditablePeriodTimerTask timerTask = new EditablePeriodTimerTask(task, () -> 1L);
+		timerTask.run();
+		
+		
+    	for (Cyclist cyclist : race.getRacersAtTheEnd()) {
+			System.out.println("id: "+cyclist.getId()+ " fatigue: " + cyclist.getFatigueFactor()+ " fitness: " + cyclist.getFitnessFactor() + " pos: "+cyclist.getLocation().getX() + " state: " + cyclist.getCyclistState());
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		switch (Actions.valueOf(e.getActionCommand())) {
+		case SIMULATE:
+			simulate();
+			break;
+		default:
+			break;
+		}
+	}
 }

@@ -1,6 +1,5 @@
 package com.app.prracesimulator.models.entities;
 
-import java.awt.geom.Point2D;
 
 /**
  * @author : Gabriel Huertas <gabriel970826@gmail.com>

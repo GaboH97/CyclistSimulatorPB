@@ -8,12 +8,12 @@ public class RaceConstants {
 	/**
 	 * Longitud de la carrera en metros (Paris-Roubaix Edicion 2019)
 	 */
-	public static final int RACE_LENGTH = 257000;
+	public static final int RACE_LENGTH = 157000;//257000
 	public static final int HEAD_WIND = 0;
 	/**
 	 * Cambiarlo a 3 ciclistas
 	 */
-	public static int NUMBER_OF_CYCLISTS = 2;
+	public static int NUMBER_OF_CYCLISTS = 100;
 
 	// TODO completar
 	public static double WC_MIN_5S = 22.14;
@@ -45,6 +45,6 @@ public class RaceConstants {
 	public static int MIN_FATIGUE_INIT = 1;
 	public static int MAX_FATIGUE_INIT = 10;
 
-    public static double TIREDNESS_FACTOR = 1/3600;
+    public static double TIREDNESS_FACTOR = 3600;//este factor no es multiplicativo sino de division
     public static double RESTENESS_FACTOR = 1/1800;
 }

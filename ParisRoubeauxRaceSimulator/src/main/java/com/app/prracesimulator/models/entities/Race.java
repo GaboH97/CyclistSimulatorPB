@@ -23,13 +23,15 @@ import lombok.Setter;
 public class Race {
 
     private ArrayList<Cyclist> racersOriginal;
+    private ArrayList<Cyclist> racers;
+    private ArrayList<Cyclist> racersAtTheEnd;
     private ArrayList<PaveSection> paveSegments;
-    private ArrayList<CyclistLocation> locationsInPeloton;
 
     public Race() {
         racersOriginal = new ArrayList<>();
+        racers = new ArrayList<>();
+        racersAtTheEnd = new ArrayList<>();
         paveSegments = new ArrayList<>();
-        locationsInPeloton = new ArrayList<>();
         this.setUpRace();
     }
 
@@ -54,8 +56,8 @@ public class Race {
     	Random rand = new Random();
     	for (int i = 1; i <= RaceConstants.NUMBER_OF_CYCLISTS; i++) {
         	this.racersOriginal.add(new Cyclist(i, rand));
+        	this.racers.add(new Cyclist(i, rand));
 		}
-    	this.locateCyclistStart();
     }
 
     /**
@@ -73,17 +75,6 @@ public class Race {
             int difficulty = paveSectionData.get(3).intValue();
             return new PaveSection(id, start, length, difficulty);
         }).forEach(paveSegments::add);
-    }
-
-    /**
-     * metodo que crea la ubicacion de todos los ciclistas al inicio de la
-     * carrera en la ubicacion metro cero y con 0 metros de distancia entre
-     * ellos
-     */
-    private void locateCyclistStart() {
-        for (Cyclist cyclist : racersOriginal) {
-			this.locationsInPeloton.add(new CyclistLocation(cyclist, 0));
-		}
     }
 
     /**
@@ -123,6 +114,6 @@ public class Race {
      * @return
      */
     public boolean hasFinished(){
-        return this.racersOriginal.stream().allMatch(racer -> racer.getLocation().getX() >= RaceConstants.RACE_LENGTH);
+        return this.racersOriginal.size() == this.racersAtTheEnd.size();
     }
 }

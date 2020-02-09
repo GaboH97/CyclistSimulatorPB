@@ -2,9 +2,7 @@ package com.app.prracesimulator.models.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.util.Random;
@@ -46,13 +44,13 @@ public class Cyclist implements Movable{
     /**
      * En m/s
      */
-    private double velocity;
+    private double velocityMS;
 
     /**
-     * En m/s^2
+     * tipo de llegada, termino o dequalified
      */
-//    private double acceleration;
-
+    
+    private CyclistState cyclistState;
     /**
      * Método que desplaza la
      * @param currentTime
@@ -60,7 +58,7 @@ public class Cyclist implements Movable{
     @Override
     public void move(){
         this.location.setLocation(
-                this.location.getX()+velocity,
+                this.location.getX()+velocityMS,
                 this.location.getY());
     }
 
@@ -128,8 +126,9 @@ public class Cyclist implements Movable{
 		this.fitnessFactor = rand.doubles(RaceConstants.MIN_FITNESS, (RaceConstants.MAX_FITNESS)).findFirst().getAsDouble();
 		this.fatigueFactor = rand.doubles(RaceConstants.MIN_FATIGUE_INIT, (RaceConstants.MAX_FATIGUE_INIT)).findFirst().getAsDouble();
 		//TODO MIRAR ESTO
-		this.velocity = 0;
+		this.velocityMS = 0;
 		this.location = new Double(0, 0);
+		this.cyclistState = CyclistState.RACING;
 //		this.acceleration = acceleration;
 	}
     
@@ -138,9 +137,9 @@ public class Cyclist implements Movable{
 		double effortThatCanPerform = ((this.getFitnessFactor()-this.getFatigueFactor())/2)+50;
 //		System.out.println("effort" + effortThatCanPerform);
 		double velocityAccordingFormKmH = Math.log10(effortThatCanPerform)*20+20;
-//		System.out.println("velocityAccordingForm" + velocityAccordingFormKmH);
-//		this.fatigueFactor += velocityAccordingFormKmH/3600; 
-//		System.out.println("fatigueFactor" + fatigueFactor);
+//		System.out.println("velocityAccordingFormKMH " + velocityAccordingFormKmH);
+		this.fatigueFactor += velocityAccordingFormKmH/RaceConstants.TIREDNESS_FACTOR; 
+//		System.out.println("fatigueFactor" + this.fatigueFactor);
 		
 		return velocityAccordingFormKmH;
 	}
