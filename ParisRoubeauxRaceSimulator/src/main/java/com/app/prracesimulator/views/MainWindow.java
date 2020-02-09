@@ -7,10 +7,12 @@ package com.app.prracesimulator.views;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
+import java.util.TimerTask;
 
 import com.app.prracesimulator.controllers.Actions;
 import com.app.prracesimulator.controllers.Controller;
 import com.app.prracesimulator.models.entities.Cyclist;
+import com.app.prracesimulator.models.entities.Race;
 
 /**
  *
@@ -38,10 +40,10 @@ public class MainWindow extends javax.swing.JFrame {
     	rap = new RaceAnimationPanel(controller);
 		this.panelContainerDraw.add(rap, BorderLayout.CENTER);
 	}
-
+   
     public void setRacers(ArrayList<Cyclist> racers) {
-    	this.rap.setRacers(racers);
-    }
+    	this.rap.setRacersPositions(racers);
+	}
     
 	/**
      * 
@@ -50,17 +52,6 @@ public class MainWindow extends javax.swing.JFrame {
     public void setActions(Controller controller){
         startButton.setActionCommand(Actions.SIMULATE.name());
         startButton.addActionListener(controller);
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) { 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainWindow(null).setVisible(true);
-            }
-        });
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------
@@ -152,7 +143,5 @@ public class MainWindow extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                        
-   
-    
+    }// </editor-fold>                         
 }

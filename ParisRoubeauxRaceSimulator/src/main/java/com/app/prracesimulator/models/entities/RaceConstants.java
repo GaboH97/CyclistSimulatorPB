@@ -13,7 +13,7 @@ public class RaceConstants {
 	/**
 	 * Cambiarlo a 3 ciclistas
 	 */
-	public static int NUMBER_OF_CYCLISTS = 100;
+	public static int NUMBER_OF_CYCLISTS = 10;
 
 	// TODO completar
 	public static double WC_MIN_5S = 22.14;

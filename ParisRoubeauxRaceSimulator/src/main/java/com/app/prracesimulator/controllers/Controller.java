@@ -29,9 +29,9 @@ public class Controller implements ActionListener {
 
 	public Controller() {
 		this.race = new Race();
-		this.mainWindow = new MainWindow(this);
 		this.timer = new Timer();
 		this.raceTimeTicker = RaceTimeTicker.getInstance();
+		this.mainWindow = new MainWindow(this);
 		this.mainWindow.setVisible(true);
 	}
 
@@ -39,11 +39,14 @@ public class Controller implements ActionListener {
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
+				System.out.println("cyclist" + race.getRacers().size() + race.getRacersAtTheEnd().size() + race.getRacersOriginal().size());
+
 				if (!race.hasFinished()) {
 					race.getRacers().forEach(cyclist -> {
 						if (cyclist.getCyclistState().equals(CyclistState.RACING)) {
 	                		cyclist.setVelocityMS(cyclist.getVelocityAccordingFormKmH()/3.6);//se divide en 3.6 pues la velocidad esta en km/h y se necesita en m/s
 	                		cyclist.move();
+	                        mainWindow.setRacers(race.getRacers());
 	                		System.out.println(cyclist);
 	                		if (cyclist.getLocation().getX()>= RaceConstants.RACE_LENGTH && !race.getRacersAtTheEnd().contains(cyclist)) {
 	                			cyclist.setCyclistState(CyclistState.FINISHER);
@@ -54,7 +57,6 @@ public class Controller implements ActionListener {
 	                			race.getRacersAtTheEnd().add(cyclist);
 							}
 	                        raceTimeTicker.advance();
-	                        mainWindow.setRacers(race.getRacers());
 	            		}
 					});
 //                    System.out.println("-------------------");
