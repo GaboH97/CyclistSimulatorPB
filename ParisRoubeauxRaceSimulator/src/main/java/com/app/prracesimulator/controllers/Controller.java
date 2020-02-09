@@ -7,13 +7,12 @@ import com.app.prracesimulator.models.entities.RaceConstants;
 import com.app.prracesimulator.util.EditablePeriodTimerTask;
 import com.app.prracesimulator.util.RaceTimeTicker;
 import com.app.prracesimulator.views.MainWindow;
+import com.app.prracesimulator.views.SimulationVariablesDialog;
 
 import lombok.Data;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,14 +26,15 @@ public class Controller implements ActionListener {
 	private Timer timer;
 	private Race race;
 	private MainWindow mainWindow;
-	RaceTimeTicker raceTimeTicker;
+	private SimulationVariablesDialog simulationVariablesDialog;
+	private RaceTimeTicker raceTimeTicker;
 
 	public Controller() {
 		this.race = new Race();
 		this.timer = new Timer();
 		this.raceTimeTicker = RaceTimeTicker.getInstance();
+		this.simulationVariablesDialog = new SimulationVariablesDialog(this);
 		this.mainWindow = new MainWindow(this);
-		this.mainWindow.setVisible(true);
 	}
 
 	@Override
@@ -43,15 +43,22 @@ public class Controller implements ActionListener {
 		case SIMULATE:
 			simulate();
 			break;
-		default:
+		case CLOSE_MAIN_WINDOW:
+			closeMainWindow();
 			break;
 		}
+	}
+	
+	private void closeMainWindow() {
+		
 	}
 
 	/**
 	 * metodo que se encarga de realizar la simulacion
 	 */
 	public void simulate() {
+		this.mainWindow.setVisible(true);
+		this.simulationVariablesDialog.setVisible(false);
 		this.race.getRacers().forEach(System.out::println);
 		System.out.println("------------");
 		TimerTask task = new TimerTask() {
@@ -91,6 +98,7 @@ public class Controller implements ActionListener {
 				}
 			});
 			this.race.updateCyclistRankingPositions();//
+			// TODO: enviar lista actualizada 
 			for (Cyclist racer : race.getRacers()) {
 //				racer.setFatigue(racer.getFatigue()-(1/(5*race.getNextBestInMeters(racer.getId()))));
 			}

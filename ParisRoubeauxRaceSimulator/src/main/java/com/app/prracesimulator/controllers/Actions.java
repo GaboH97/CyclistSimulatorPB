@@ -7,5 +7,5 @@ package com.app.prracesimulator.controllers;
  */
 public enum Actions {
 
-    SIMULATE;
+    SIMULATE, CLOSE_MAIN_WINDOW;
 }
