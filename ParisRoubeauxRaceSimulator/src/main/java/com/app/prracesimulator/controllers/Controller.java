@@ -49,8 +49,9 @@ public class Controller implements ActionListener {
 		}
 	}
 	
-	private void closeMainWindow() {
-		
+	public void closeMainWindow() {
+		this.simulationVariablesDialog.setVisible(true);
+		this.mainWindow.setVisible(false);
 	}
 
 	/**
@@ -106,7 +107,7 @@ public class Controller implements ActionListener {
 		}else {
 			this.race.getRacers().forEach(System.out::println);
 			System.out.println("------------");
-			System.exit(0);;
+//			System.exit(0);;
 		}
 	}
 
