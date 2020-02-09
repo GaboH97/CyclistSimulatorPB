@@ -44,7 +44,7 @@ public class EditablePeriodTimerTask extends TimerTask {
         Long p = period.get();
         Objects.requireNonNull(p);
         if (oldP == null || !oldP.equals(p)) {
-            System.out.println(String.format("Period set to: %d s", p / 1000));
+//            System.out.println(String.format("Period set to: %d s", p / 1000));
             cancel();
             new Timer().schedule(new EditablePeriodTimerTask(task, period, p), p, p);
             // new Timer().scheduleAtFixedRate(new EditablePeriodTimerTask(task, period), p, p);

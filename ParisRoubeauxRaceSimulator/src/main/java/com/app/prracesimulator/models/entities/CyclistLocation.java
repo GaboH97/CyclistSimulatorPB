@@ -23,6 +23,6 @@ public class CyclistLocation {
      */
     private Cyclist cyclist;
     //TODO Comparar por este atributo;
-    private int locationInPeloton;
+//    private int locationInPeloton;
     private int clossenesToBestNextInMeters;
 }

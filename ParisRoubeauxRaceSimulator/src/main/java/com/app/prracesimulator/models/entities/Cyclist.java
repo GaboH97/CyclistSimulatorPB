@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
+import java.util.Random;
 
 /**
  * clase que determina los atributos del ciclista
@@ -14,16 +16,8 @@ import java.awt.geom.Point2D;
  *
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class Cyclist implements Movable{
-
-    public static int MIN_WEIGHT = 56; //En Kilogramos
-    public static int MAX_WEIGHT = 80; //En Kilogramos
-    public static int MIN_FITNESS_FACTOR = 1; //Unidad escalar
-    public static int MAX_FITNESS_FACTOR = 100;
-    public static int MIN_FATIGUE_FACTOR = 1;
-    public static int MAX_FATIGUE_FACTOR = 100;
     
     private int id;
     private double fiveSecsPower;
@@ -57,39 +51,98 @@ public class Cyclist implements Movable{
     /**
      * En m/s^2
      */
-    private double acceleration;
+//    private double acceleration;
 
     /**
      * Método que desplaza la
      * @param currentTime
      */
     @Override
-    public void move(long currentTime){
+    public void move(){
         this.location.setLocation(
-                updateLocationOnXAxis(currentTime),
+                this.location.getX()+velocity,
                 this.location.getY());
     }
 
-    /**
-     * Para movimiento rectilíneo uniformemente acelerado
-     * @param currentTime
-     * @return
-     */
-
-    public double updateLocationOnXAxis(Long currentTime){
-        return velocity*currentTime;
-//        return velocity*currentTime + 0.5 * acceleration*Math.pow(currentTime,2);
-    }
-
-    /**
-     *
-     * @param currentTime
-     * @return
-     */
-    public double updateVelocity(long currentTime){
-        if(velocity == 0){
-            return  acceleration*currentTime;
+	public Cyclist(int id, Random rand) {
+		
+		this.id = id;
+		//asignacion perfil de poder-------------------------------------------------------------------------
+        //TODO meter en ternario
+        if (rand.nextBoolean()) {
+        	fiveSecsPower = rand.doubles(RaceConstants.EX_MIN_5S,RaceConstants.EX_MAX_5S).findFirst().getAsDouble();
+		}else {
+			fiveSecsPower = rand.doubles(RaceConstants.WC_MIN_5S,RaceConstants.WC_MAX_5S).findFirst().getAsDouble();			
+		} 
+        if (rand.nextBoolean()) {
+        	oneMinPower = rand.doubles(RaceConstants.EX_MIN_1M,RaceConstants.EX_MAX_1M).findFirst().getAsDouble();
+		}else {
+        	oneMinPower = rand.doubles(RaceConstants.WC_MIN_1M,RaceConstants.WC_MAX_1M).findFirst().getAsDouble();
+		} 
+        if (rand.nextBoolean()) {
+        	fiveMinPower = rand.doubles(RaceConstants.EX_MIN_5M,RaceConstants.EX_MAX_5M).findFirst().getAsDouble();
+		}else {
+        	fiveMinPower = rand.doubles(RaceConstants.WC_MIN_5M,RaceConstants.WC_MAX_5M).findFirst().getAsDouble();
+		} 
+        if (rand.nextBoolean()) {
+        	oneHourPower = rand.doubles(RaceConstants.EX_MIN_FT,RaceConstants.EX_MAX_FT).findFirst().getAsDouble();
+		}else {
+        	oneHourPower = rand.doubles(RaceConstants.WC_MIN_FT,RaceConstants.WC_MAX_FT).findFirst().getAsDouble();
+		}  
+        //asignacion peso ciclista sugun su tip--------------------------------------------
+        double difMAxMin5s= RaceConstants.WC_MAX_5S -   RaceConstants.EX_MIN_5S;
+        double difMAxMin1M= RaceConstants.WC_MAX_1M -   RaceConstants.EX_MIN_1M;
+        double difMAxMin5M= RaceConstants.WC_MAX_5M -   RaceConstants.EX_MIN_5M;
+        double difMAxMinFt= RaceConstants.WC_MAX_FT -   RaceConstants.EX_MIN_FT;
+        
+        double difCyclistMin5s= this.fiveSecsPower -   RaceConstants.EX_MIN_5S;
+        double difCyclistMin1M= this.fiveSecsPower -   RaceConstants.EX_MIN_1M;
+        double difCyclistMin5M = this.fiveSecsPower -   RaceConstants.EX_MIN_5M;
+        double difCyclistMinFt = this.fiveSecsPower -   RaceConstants.EX_MIN_FT;
+        
+        double percentageCyclist5s= (difCyclistMin5s*100)/difMAxMin5s;
+        double percentageCyclist1M= (difCyclistMin1M*100)/difMAxMin1M;
+        double percentageCyclist5M = (difCyclistMin5M*100)/difMAxMin5M;
+        double percentageCyclistFt = (difCyclistMinFt*100)/difMAxMinFt;
+        
+        if(percentageCyclist5s >=  percentageCyclist5M &&
+        		percentageCyclist5s >=  percentageCyclistFt &&
+        		percentageCyclist1M >=  percentageCyclist5M && 
+        		percentageCyclist1M >=  percentageCyclistFt) {
+        	//peso sprinter
+        	this.weight = rand.doubles(RaceConstants.SP_WEIGHT_MIN,RaceConstants.SP_WEIGHT_MAX).findFirst().getAsDouble();
         }
-        return velocity + acceleration*currentTime;
-    }
+        if (percentageCyclist5M >=  percentageCyclist5s &&
+        		percentageCyclist5M >=  percentageCyclist1M &&
+        		percentageCyclist5M >=  percentageCyclistFt ) {
+			//peso de golpeador
+        	this.weight = rand.doubles(RaceConstants.GP_WEIGHT_MIN,RaceConstants.GP_WEIGHT_MAX).findFirst().getAsDouble();
+		}
+        if (percentageCyclistFt >=  percentageCyclist5s &&
+        		percentageCyclistFt >=  percentageCyclist1M &&
+        				percentageCyclistFt >=  percentageCyclist5M) {
+        	this.weight = rand.doubles(RaceConstants.GT_WEIGHT_MIN,RaceConstants.GT_WEIGHT_MAX).findFirst().getAsDouble();
+		}
+        
+        //------------------------------------------------------------------
+		this.fitnessFactor = rand.doubles(RaceConstants.MIN_FITNESS, (RaceConstants.MAX_FITNESS)).findFirst().getAsDouble();
+		this.fatigueFactor = rand.doubles(RaceConstants.MIN_FATIGUE_INIT, (RaceConstants.MAX_FATIGUE_INIT)).findFirst().getAsDouble();
+		//TODO MIRAR ESTO
+		this.velocity = 0;
+		this.location = new Double(0, 0);
+//		this.acceleration = acceleration;
+	}
+    
+	
+	public double getVelocityAccordingForm() {
+		double effortThatCanPerform = ((this.getFitnessFactor()-this.getFatigueFactor())/2)+50;
+//		System.out.println("effort" + effortThatCanPerform);
+		double velocityAccordingFormKmH = Math.log10(effortThatCanPerform)*20+20;
+//		System.out.println("velocityAccordingForm" + velocityAccordingFormKmH);
+//		this.fatigueFactor += velocityAccordingFormKmH/3600; 
+//		System.out.println("fatigueFactor" + fatigueFactor);
+		
+		return velocityAccordingFormKmH;
+	}
+    
 }

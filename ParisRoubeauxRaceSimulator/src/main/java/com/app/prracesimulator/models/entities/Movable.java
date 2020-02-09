@@ -9,6 +9,6 @@ import java.awt.geom.Point2D;
  */
 public interface Movable {
 
-    public void move(long currentTime);
+    public void move();
 
 }
