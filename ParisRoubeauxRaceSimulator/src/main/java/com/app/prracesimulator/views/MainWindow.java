@@ -2,6 +2,8 @@ package com.app.prracesimulator.views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
@@ -66,18 +68,22 @@ public class MainWindow extends JFrame {
 		raceAnimationPanel = new RaceAnimationPanel(controller);
 		JScrollPane scroll = new JScrollPane(raceAnimationPanel);
 		scroll.getVerticalScrollBar().setUnitIncrement(15);
-		scroll.setBounds(0, 0, 1070, 380);
+		Toolkit t = Toolkit.getDefaultToolkit();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		scroll.setBounds(0, 0, (int)(screenSize.getWidth() * .8), 380);
 		pnCenter.add(scroll);
 		competitorsPanel = new CompetitorsPanel(controller);
-		competitorsPanel.setBounds(0, 381, 1070, 245);
+		competitorsPanel.setBounds(0, 381, (int)(screenSize.getWidth()), 245);
 		pnCenter.add(competitorsPanel);
+
+		TopCyclistPanel topCyclistPanel = new TopCyclistPanel(controller);
+		topCyclistPanel.setBounds((int)(screenSize.getWidth() * .8) + 1, 0, (int)(screenSize.getWidth() * .2), 380);
+		pnCenter.add(topCyclistPanel);
 		add(pnCenter, BorderLayout.CENTER);
 
 		JPanel pnTitle = new JPanel();
 		pnTitle.add(new JLabel("Simulación Carrera Paris Roubaix"), BorderLayout.NORTH);
 		add(pnTitle, BorderLayout.NORTH);
-		add(new TopCyclistPanel(controller), BorderLayout.LINE_END);
-
 	}
 
 	private static void designWindow() {

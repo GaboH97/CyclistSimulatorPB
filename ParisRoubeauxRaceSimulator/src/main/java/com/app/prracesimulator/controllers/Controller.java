@@ -83,6 +83,8 @@ public class Controller implements ActionListener {
 		RaceConstants.MAX_FITNESS = (int) simulationVariablesDialog.getjSpFitnessMax().getValue();
 		RaceConstants.MIN_FATIGUE_INIT = (int) simulationVariablesDialog.getjSpFatigaMin().getValue();
 		RaceConstants.MAX_FATIGUE_INIT = (int) simulationVariablesDialog.getjSpFatigaMax().getValue();
+		RaceConstants.TIREDNESS_FACTOR = (int) simulationVariablesDialog.getjSpCansancio().getValue();
+		RaceConstants.RESTENESS_FACTOR = (int) simulationVariablesDialog.getjSpDescanso().getValue();
 	}
 
 	/**

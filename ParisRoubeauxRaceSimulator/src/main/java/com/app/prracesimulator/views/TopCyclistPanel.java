@@ -10,6 +10,6 @@ public class TopCyclistPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	public TopCyclistPanel(Controller controller) {
-		this.add(new JLabel("Top 10 5555555555555555555555555"));
+		this.add(new JLabel("Top 10 5555555555555555555555555555555"));
 	}
 }
