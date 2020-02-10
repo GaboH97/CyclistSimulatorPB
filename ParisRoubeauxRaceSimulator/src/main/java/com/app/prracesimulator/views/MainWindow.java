@@ -8,7 +8,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,6 +21,7 @@ public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private RaceAnimationPanel raceAnimationPanel;
 	private CompetitorsPanel competitorsPanel;
+	private TopCyclistPanel topCyclistPanel;
 
 	public MainWindow(Controller controller) {
 		designWindow();
@@ -68,17 +68,20 @@ public class MainWindow extends JFrame {
 		raceAnimationPanel = new RaceAnimationPanel(controller);
 		JScrollPane scroll = new JScrollPane(raceAnimationPanel);
 		scroll.getVerticalScrollBar().setUnitIncrement(15);
-		Toolkit t = Toolkit.getDefaultToolkit();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		scroll.setBounds(0, 0, (int)(screenSize.getWidth() * .8), 380);
 		pnCenter.add(scroll);
 		competitorsPanel = new CompetitorsPanel(controller);
-		competitorsPanel.setBounds(0, 381, (int)(screenSize.getWidth()), 245);
-		pnCenter.add(competitorsPanel);
+		JScrollPane scrollcompetitors = new JScrollPane(competitorsPanel);
+		scrollcompetitors.getVerticalScrollBar().setUnitIncrement(15);
+		scrollcompetitors.setBounds(0, 381, (int)(screenSize.getWidth()), 245);
+		pnCenter.add(scrollcompetitors);
 
-		TopCyclistPanel topCyclistPanel = new TopCyclistPanel(controller);
-		topCyclistPanel.setBounds((int)(screenSize.getWidth() * .8) + 1, 0, (int)(screenSize.getWidth() * .2), 380);
-		pnCenter.add(topCyclistPanel);
+		topCyclistPanel = new TopCyclistPanel(controller);
+		JScrollPane scrollTopCyclist = new JScrollPane(topCyclistPanel);
+		scrollTopCyclist.getVerticalScrollBar().setUnitIncrement(15);
+		scrollTopCyclist.setBounds((int)(screenSize.getWidth() * .8) + 1, 0, (int)(screenSize.getWidth() * .2), 380);
+		pnCenter.add(scrollTopCyclist);
 		add(pnCenter, BorderLayout.CENTER);
 
 		JPanel pnTitle = new JPanel();
@@ -112,5 +115,6 @@ public class MainWindow extends JFrame {
 	public void setRacers(ArrayList<Cyclist> racers) {
 		this.raceAnimationPanel.setRacersPositions(racers);
 		this.competitorsPanel.setRacers(racers);
+		this.topCyclistPanel.setRacers(racers);
 	}
 }
