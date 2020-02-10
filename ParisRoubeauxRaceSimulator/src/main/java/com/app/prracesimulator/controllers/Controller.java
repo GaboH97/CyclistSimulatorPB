@@ -28,6 +28,7 @@ public class Controller implements ActionListener {
 	private MainWindow mainWindow;
 	private SimulationVariablesDialog simulationVariablesDialog;
 	private RaceTimeTicker raceTimeTicker;
+	private TimerTask timerTask;
 
 	public Controller() {
 		this.race = new Race();
