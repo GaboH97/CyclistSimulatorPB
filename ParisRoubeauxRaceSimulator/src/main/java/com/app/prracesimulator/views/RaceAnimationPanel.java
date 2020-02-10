@@ -34,22 +34,21 @@ public class RaceAnimationPanel extends JPanel {
 
 	public RaceAnimationPanel(Controller controller) {
 		super();
-		setBackground(Color.red);		
+		setBackground(Color.GRAY);		
 		
 		this.initComponents(controller);
 	}
 
+	/**
+	 * Metodo que inicia comonentes del dibujo del croquis de la carrera
+	 * @param controller
+	 */
 	private void initComponents(Controller controller) {
-		int sizeX = 10000 ;
-		int sizeY = 400 ;		
+		int sizeX = 16000 ;
+		int sizeY = 349 ;		
 		raceSketch =  new RaceSketch(controller, sizeX, sizeY);
-		//this.setPreferredSize(new Dimension(sizeX, sizeY));
-		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		raceSketch.setPreferredSize(new Dimension(sizeX,sizeY));
 		this.add(raceSketch);
-		
-		//this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		//this.setPreferredSize(new Dimension(sizeX,sizeY));
 	}
 
 
