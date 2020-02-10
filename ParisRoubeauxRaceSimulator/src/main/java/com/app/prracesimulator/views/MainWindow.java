@@ -1,7 +1,6 @@
 package com.app.prracesimulator.views;
 
 import java.awt.BorderLayout;
-import java.awt.Dialog;
 import java.util.ArrayList;
 
 import com.app.prracesimulator.controllers.Actions;

@@ -27,7 +27,8 @@ public class Controller implements ActionListener {
 	private Timer timer;
 	private Race race;
 	private MainWindow mainWindow;
-	RaceTimeTicker raceTimeTicker;
+	private RaceTimeTicker raceTimeTicker;
+	private TimerTask timerTask;
 
 	public Controller() {
 		this.race = new Race();
@@ -35,6 +36,18 @@ public class Controller implements ActionListener {
 		this.raceTimeTicker = RaceTimeTicker.getInstance();
 		this.mainWindow = new MainWindow(this);
 		this.mainWindow.setVisible(true);
+
+		setUpTimerTask();
+	}
+
+	private void setUpTimerTask() {
+		this.timerTask = new TimerTask() {
+
+			@Override
+			public void run() {
+				updateWorld();
+			}
+		};
 	}
 
 	@Override
@@ -52,54 +65,82 @@ public class Controller implements ActionListener {
 	 * metodo que se encarga de realizar la simulacion
 	 */
 	public void simulate() {
-		this.race.getRacers().forEach(System.out::println);
-		System.out.println("------------");
+
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
 				updateWorld();
 			}
 		};
-		// EL PARÁMETRO QUE ENTRA EN EL CONSTRUCTUR INDICA LA VELOCIDAD CON LA QUE SE VA
-		// EJECUTAR EL PROGRAMA PARA ESTE CASO ES DE 500L
-		EditablePeriodTimerTask timerTask = new EditablePeriodTimerTask(task, () -> 1000L);
+		EditablePeriodTimerTask timerTask = new EditablePeriodTimerTask(task, () -> 10L);
 		timerTask.run();
 	}
 
 	/**
-	 * metodo que se encarga de actualizar el mundo es decir la carrera y sus
+	 * Método que se encarga de actualizar el mundo es decir la carrera y sus
 	 * ciclistas, tanto en logica como view este se va a llamar en el hilo de
 	 * timertask
 	 */
 	private void updateWorld() {
+
 		if (!race.hasFinished()) {
+
 			race.getRacers().forEach(cyclist -> {
+
 				if (cyclist.getCyclistState().equals(CyclistState.RACING)) {
-					// se divide en 3.6 pues la velocidad esta en km/h y se necesita en m/s
-					cyclist.setVelocityMS(cyclist.getVelocityAccordingFormKmH() / 3.6);
-					cyclist.move();			
+
+					cyclist.move();
+
 					if (cyclist.getLocation().getX() >= RaceConstants.RACE_LENGTH
 							&& !race.getRacersAtTheEnd().contains(cyclist)) {
+
 						cyclist.setCyclistState(CyclistState.FINISHER);
 						race.getRacersAtTheEnd().add(cyclist);
+
 					}
-					if (cyclist.getVelocityMS() < 1 && !race.getRacersAtTheEnd().contains(cyclist)) {
+
+					if (cyclist.getVelocityMS() < RaceConstants.MINIMUM_VELOCITY_THRESHOLD
+							&& !race.getRacersAtTheEnd().contains(cyclist)) {
+
 						cyclist.setCyclistState(CyclistState.DEQUALIFIED);
 						race.getRacersAtTheEnd().add(cyclist);
+
 					}
+					// Aquí avanza al siguiente instante de tiempo
 					raceTimeTicker.advance();
 				}
 			});
-			this.race.updateCyclistRankingPositions();//
-			for (Cyclist racer : race.getRacers()) {
-//				racer.setFatigue(racer.getFatigue()-(1/(5*race.getNextBestInMeters(racer.getId()))));
-			}
-			mainWindow.setRacers(race.getRacers());//se actualiza la view
-		}else {
+
+			// Actualiza las posiciones de los ciclistas en carrera de acuerdo a su posición
+			this.race.updateCyclistRankingPositions();
+
+			// Ajusta los valores de fatiga para todos los corredores
+			race.adjustFatigueForAllRacers();
+
+			// AJUSTAR DE ACUERDO A DISTANCIA RESPECTO AL SIGUIENTE MEJOR CICLISTA
+			race.getRacers().forEach(race::adjustCyclistFatigueAccordingToClosenesToNextBestCyclist);
+
+			System.out.println("---------- FATIGUE ADJUSTMENTS -------------");
+
+//			race.getRacers().forEach(cyclist -> {
+//				double unadjustedFatigue = cyclist.getFatigue();
+//				double adjustedFatigue = race.getAdjustedFatigueAccordingToPhenomena(cyclist);
+//				System.out.println("Cyclist " + cyclist.getId() + ": " + unadjustedFatigue + " -> " + adjustedFatigue);
+//			});
+
+			mainWindow.setRacers(race.getRacers());
+
+		} else {
+
 			this.race.getRacers().forEach(System.out::println);
+			
 			System.out.println("------------");
-			System.exit(0);;
+
+			try {
+				Thread.sleep(100000L);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
-
 }
