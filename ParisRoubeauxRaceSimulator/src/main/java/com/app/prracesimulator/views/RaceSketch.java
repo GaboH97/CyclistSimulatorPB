@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import javax.swing.JPanel;
+
 import com.app.prracesimulator.controllers.Controller;
 import com.app.prracesimulator.models.entities.Cyclist;
 import com.app.prracesimulator.models.entities.PaveSection;
@@ -18,7 +20,7 @@ import com.app.prracesimulator.models.entities.RaceConstants;
  * @author Yuliana
  *
  */
-public class RaceSketch extends Canvas {
+public class RaceSketch extends JPanel {
 
 	/**
 	 * 
@@ -26,9 +28,9 @@ public class RaceSketch extends Canvas {
 	private static final long serialVersionUID = 1L;
 	public ArrayList<Cyclist> racers;
 	public ArrayList<PaveSection> paveSegments;
-	
+
 	private int pixelesRuta = 0;
-	
+
 	/**
 	 * Constructor de la clase, que inicializa todos los valores necesarios para el
 	 * pintado de la carrera.
@@ -56,25 +58,30 @@ public class RaceSketch extends Canvas {
 		pintarCarretera(gbuffer, Color.decode("#0B610B"));
 
 		// Pinta separaciones kilom�tricas de negro
-		pintarSeparacionesKilometricas(gbuffer, Color.BLACK, 10);
+		pintarSeparacionesKilometricas(gbuffer, Color.WHITE, 1);
 
 		// Actualiza el buffer en el canvas
 		g.drawImage(buffer, 0, 0, this);
-		
 
-		drawCyclists(g);	
+		drawCyclists(g);
+	}
+
+	@Override
+	public void update(Graphics g) {
+		super.update(g);
+		paint(g);
 	}
 
 	private void drawCyclists(Graphics g) {
 		Graphics2D g2D = (Graphics2D) g;
-		//hay que pintar el terreno de la carrera
-		this.paintGroundRace(g2D);
-		//aca se pintan los ciclistas
+
+		// aca se pintan los ciclistas
 		paintRacers(g2D);
 	}
 
 	/**
 	 * metodo en el que se pintan los racers deacuerdo a su ubicacion y su estado
+	 * 
 	 * @param g2D
 	 */
 	private void paintRacers(Graphics2D g2D) {
@@ -95,13 +102,13 @@ public class RaceSketch extends Canvas {
 				break;
 			}
 			g2D.drawOval((int) cyclist.getLocation().getX(), // ubicacion en x del ovalo
-					(int) cyclist.getLocation().getY(),//ubicacion en y del ovalo
-						10,//ancho 
-					100);// alto
+					getHeight() / 2 - 40, // ubicacion en y del ovalo
+					10, // ancho
+					50);// alto
 
 		}
 	}
-	
+
 	/**
 	 * Dibuja el cielo sobre el buffer (Graphics) que sirve como imagen de fondo.
 	 * 
@@ -114,20 +121,20 @@ public class RaceSketch extends Canvas {
 	}
 
 	/**
-	 * Dibuja la carretera 
+	 * Dibuja la carretera
+	 * 
 	 * @param g     Graphics sobre el que se pintan todas las im�genes.
 	 * @param color Color de la carretera
 	 */
 	private void pintarCarretera(Graphics g, Color color) {
 		g.setColor(color);
-		g.fillRect(0, getHeight()/2 + 10 , getWidth(), getHeight()/2 );
+		g.fillRect(0, getHeight() / 2 + 10, getWidth(), getHeight() / 2);
 	}
-
 
 	/**
 	 * Dibuja las marcas que denotan los Km de la ruta
 	 * 
-	 * @param g         Graphics 
+	 * @param g         Graphics
 	 * @param color     Color de la linea que indican cada kilometro
 	 * @param distancia Distancia de separacion (en Km) entre las lineas
 	 */
@@ -135,35 +142,44 @@ public class RaceSketch extends Canvas {
 		g.setColor(color);
 		int numerodelineas = RaceConstants.RACE_LENGTH / distancia;
 		double distanciapixelsentrelineas = distancia * pixelesRuta / RaceConstants.RACE_LENGTH;
-		
 		for (int i = 0; i < numerodelineas + 1; i++) {
-			g.drawLine((int) (i * distanciapixelsentrelineas), (int) (700), //X
-					(int) (i * distanciapixelsentrelineas), (int) (400 - 15));//Y
-			g.drawString(Integer.toString(i * distancia), (int) (i * distanciapixelsentrelineas),
-					(int) (400 - 18)); //Y
+			g.drawLine((int) (i * distanciapixelsentrelineas), (int) (700), // X
+					(int) (i * distanciapixelsentrelineas), (int) (400 - 15));// Y
+			g.drawString(Integer.toString(i * distancia), (int) (i * distanciapixelsentrelineas), (int) (400 - 18)); // Y
 		}
 	}
 
-
-
-	
-	
 	/**
-	 * aca se debe pintar la carrera deacuerdo a los segmentos de pave
-	 * @param g2D
+	 * Dibuja las marcas que se�alan la posici�n de las curvas sobre el buffer
+	 * (Graphics) que sirve como imagen de fondo.
+	 * 
+	 * @param g     Graphics sobre el que se pintan todas las im�genes.
+	 * @param color Color de la l�nea y n�mero que indican la curva
 	 */
-	private void paintGroundRace(Graphics2D g2D) {
-		
+	private void pintarCurvas(Graphics g, Color color) {
+		g.setColor(color);
+
+//		for (int i = 0; i < paveSegments.size(); i++) {
+//			int posicionlinea = (int) (paveSegments.get(i) * 
+//					/ (double) globales.getKILOMETROS_CARRERA());
+//			g.drawLine(posicionlinea, 0, posicionlinea, (int) globales.getTAM_DIBUJO_CARRERA_X());
+//			g.drawString(" " + Double.toString(curvas[i]), posicionlinea, 10);
+//			g.drawString(" (m/s)", posicionlinea, 22);
+//			g.drawString(" max.", posicionlinea, 35);
+//		}
+
 	}
 
 	/**
-	 * metodoi quye se llama desde el controler y actualiza la posicion de los racers
+	 * metodoi quye se llama desde el controler y actualiza la posicion de los
+	 * racers
+	 * 
 	 * @param racers
 	 */
 	public void setRacersPositions(ArrayList<Cyclist> racers) {
 		this.racers = racers;
-		this.repaint();//esto se tiene que dejar al final de todo el dibujo que se haga
-		
+		this.repaint();// esto se tiene que dejar al final de todo el dibujo que se haga
+
 	}
 
 }

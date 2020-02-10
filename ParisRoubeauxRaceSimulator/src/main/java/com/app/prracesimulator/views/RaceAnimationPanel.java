@@ -40,7 +40,7 @@ public class RaceAnimationPanel extends JPanel {
 	}
 
 	private void initComponents(Controller controller) {
-		int sizeX = 1100 ;
+		int sizeX = 10000 ;
 		int sizeY = 400 ;		
 		raceSketch =  new RaceSketch(controller, sizeX, sizeY);
 		//this.setPreferredSize(new Dimension(sizeX, sizeY));
