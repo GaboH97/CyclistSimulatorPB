@@ -6,7 +6,6 @@
 package com.app.prracesimulator.run;
 
 import com.app.prracesimulator.controllers.Controller;
-import com.app.prracesimulator.models.entities.Cyclist;
 
 /**
  * Clase principal que ejecuta la simulación

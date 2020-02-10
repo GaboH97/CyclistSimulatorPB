@@ -7,13 +7,12 @@ import com.app.prracesimulator.models.entities.RaceConstants;
 import com.app.prracesimulator.util.EditablePeriodTimerTask;
 import com.app.prracesimulator.util.RaceTimeTicker;
 import com.app.prracesimulator.views.MainWindow;
+import com.app.prracesimulator.views.SimulationVariablesDialog;
 
 import lombok.Data;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,13 +26,14 @@ public class Controller implements ActionListener {
 	private Timer timer;
 	private Race race;
 	private MainWindow mainWindow;
+	private SimulationVariablesDialog simulationVariablesDialog;
 	private RaceTimeTicker raceTimeTicker;
-	private TimerTask timerTask;
 
 	public Controller() {
 		this.race = new Race();
 		this.timer = new Timer();
 		this.raceTimeTicker = RaceTimeTicker.getInstance();
+		this.simulationVariablesDialog = new SimulationVariablesDialog(this);
 		this.mainWindow = new MainWindow(this);
 		this.mainWindow.setVisible(true);
 
@@ -56,16 +56,26 @@ public class Controller implements ActionListener {
 		case SIMULATE:
 			simulate();
 			break;
-		default:
+		case CLOSE_MAIN_WINDOW:
+			closeMainWindow();
 			break;
 		}
+	}
+
+	public void closeMainWindow() {
+		this.simulationVariablesDialog.setVisible(true);
+		this.mainWindow.setVisible(false);
 	}
 
 	/**
 	 * metodo que se encarga de realizar la simulacion
 	 */
 	public void simulate() {
-
+		this.mainWindow.setVisible(true);
+		this.simulationVariablesDialog.setVisible(false);
+		changeSettingsSimulation();
+		this.race.getRacers().forEach(System.out::println);
+		System.out.println("------------");
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
@@ -74,6 +84,18 @@ public class Controller implements ActionListener {
 		};
 		EditablePeriodTimerTask timerTask = new EditablePeriodTimerTask(task, () -> 10L);
 		timerTask.run();
+	}
+
+	public void changeSettingsSimulation() {
+		RaceConstants.RACE_LENGTH = (int) simulationVariablesDialog.getjSpLongitud().getValue();
+		RaceConstants.HEAD_WIND = (int) simulationVariablesDialog.getjSpViento().getValue();
+		RaceConstants.NUMBER_OF_CYCLISTS = (int) simulationVariablesDialog.getjSpNumCiclistas().getValue();
+		RaceConstants.MIN_FITNESS = (int) simulationVariablesDialog.getjSpFitnessMin().getValue();
+		RaceConstants.MAX_FITNESS = (int) simulationVariablesDialog.getjSpFitnessMax().getValue();
+		RaceConstants.MIN_FATIGUE_INIT = (int) simulationVariablesDialog.getjSpFatigaMin().getValue();
+		RaceConstants.MAX_FATIGUE_INIT = (int) simulationVariablesDialog.getjSpFatigaMax().getValue();
+		RaceConstants.TIREDNESS_FACTOR = (int) simulationVariablesDialog.getjSpCansancio().getValue();
+		RaceConstants.RESTENESS_FACTOR = (int) simulationVariablesDialog.getjSpDescanso().getValue();
 	}
 
 	/**
