@@ -48,7 +48,7 @@ public class Controller implements ActionListener {
 			break;
 		}
 	}
-	
+
 	public void closeMainWindow() {
 		this.simulationVariablesDialog.setVisible(true);
 		this.mainWindow.setVisible(false);
@@ -60,6 +60,7 @@ public class Controller implements ActionListener {
 	public void simulate() {
 		this.mainWindow.setVisible(true);
 		this.simulationVariablesDialog.setVisible(false);
+		changeSettingsSimulation();
 		this.race.getRacers().forEach(System.out::println);
 		System.out.println("------------");
 		TimerTask task = new TimerTask() {
@@ -74,6 +75,16 @@ public class Controller implements ActionListener {
 		timerTask.run();
 	}
 
+	public void changeSettingsSimulation() {
+		RaceConstants.RACE_LENGTH = (int) simulationVariablesDialog.getjSpLongitud().getValue();
+		RaceConstants.HEAD_WIND = (int) simulationVariablesDialog.getjSpViento().getValue();
+		RaceConstants.NUMBER_OF_CYCLISTS = (int) simulationVariablesDialog.getjSpNumCiclistas().getValue();
+		RaceConstants.MIN_FITNESS = (int) simulationVariablesDialog.getjSpFitnessMin().getValue();
+		RaceConstants.MAX_FITNESS = (int) simulationVariablesDialog.getjSpFitnessMax().getValue();
+		RaceConstants.MIN_FATIGUE_INIT = (int) simulationVariablesDialog.getjSpFatigaMin().getValue();
+		RaceConstants.MAX_FATIGUE_INIT = (int) simulationVariablesDialog.getjSpFatigaMax().getValue();
+	}
+
 	/**
 	 * metodo que se encarga de actualizar el mundo es decir la carrera y sus
 	 * ciclistas, tanto en logica como view este se va a llamar en el hilo de
@@ -85,7 +96,7 @@ public class Controller implements ActionListener {
 				if (cyclist.getCyclistState().equals(CyclistState.RACING)) {
 					// se divide en 3.6 pues la velocidad esta en km/h y se necesita en m/s
 					cyclist.setVelocityMS(cyclist.getVelocityAccordingFormKmH() / 3.6);
-					cyclist.move();			
+					cyclist.move();
 					if (cyclist.getLocation().getX() >= RaceConstants.RACE_LENGTH
 							&& !race.getRacersAtTheEnd().contains(cyclist)) {
 						cyclist.setCyclistState(CyclistState.FINISHER);
@@ -99,12 +110,13 @@ public class Controller implements ActionListener {
 				}
 			});
 			this.race.updateCyclistRankingPositions();//
-			// TODO: enviar lista actualizada 
+			// TODO: enviar lista actualizada
 			for (Cyclist racer : race.getRacers()) {
+				System.out.println(racer);
 //				racer.setFatigue(racer.getFatigue()-(1/(5*race.getNextBestInMeters(racer.getId()))));
 			}
-			mainWindow.setRacers(race.getRacers());//se actualiza la view
-		}else {
+			mainWindow.setRacers(race.getRacers());// se actualiza la view
+		} else {
 			this.race.getRacers().forEach(System.out::println);
 			System.out.println("------------");
 //			System.exit(0);;

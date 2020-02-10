@@ -19,6 +19,7 @@ public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private RaceAnimationPanel raceAnimationPanel;
+	private CompetitorsPanel competitorsPanel;
 
 	public MainWindow(Controller controller) {
 		designWindow();
@@ -60,14 +61,16 @@ public class MainWindow extends JFrame {
 
 	private void initialComponents(Controller controller) {
 		JPanel pnCenter = new JPanel();
-		pnCenter.setLayout(new BoxLayout(pnCenter, BoxLayout.Y_AXIS));
+		pnCenter.setLayout(null);
 		pnCenter.setBackground(Color.WHITE);
 		raceAnimationPanel = new RaceAnimationPanel(controller);
-		
 		JScrollPane scroll = new JScrollPane(raceAnimationPanel);
 		scroll.getVerticalScrollBar().setUnitIncrement(15);
+		scroll.setBounds(0, 0, 1070, 380);
 		pnCenter.add(scroll);
-		pnCenter.add(new CompetitorsPanel(controller));
+		competitorsPanel = new CompetitorsPanel(controller);
+		competitorsPanel.setBounds(0, 381, 1070, 245);
+		pnCenter.add(competitorsPanel);
 		add(pnCenter, BorderLayout.CENTER);
 
 		JPanel pnTitle = new JPanel();
@@ -102,5 +105,6 @@ public class MainWindow extends JFrame {
 
 	public void setRacers(ArrayList<Cyclist> racers) {
 		this.raceAnimationPanel.setRacersPositions(racers);
+		this.competitorsPanel.setRacers(racers);
 	}
 }
