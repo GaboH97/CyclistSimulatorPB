@@ -141,6 +141,9 @@ public class Race {
 		return this.racersOriginal.size() == this.racersAtTheEnd.size();
 	}
 	
+	/**
+	 * Método que ajusta los valores de fatiga para todos los corredores
+	 */
 	public void adjustFatigueForAllRacers() {
 		this.racers.forEach(this::getAdjustedFatigueAccordingToPhenomena);
 	}
