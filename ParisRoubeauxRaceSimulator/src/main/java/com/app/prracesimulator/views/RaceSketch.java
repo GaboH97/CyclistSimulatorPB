@@ -127,20 +127,12 @@ public class RaceSketch extends JPanel {
 	 * @param distancia 
 	 */
 	private void pintarSeparacionesKilometricas(Graphics g, Color color, int distancia) {
-		Graphics2D g2 = (Graphics2D) g;
-
 		g.setColor(color);
 		int numerodelineas = RaceConstants.RACE_LENGTH / distancia;
 		 long distanciapixelsentrelineas = (long)  distancia * pixelesRutaX / RaceConstants.RACE_LENGTH;
-		
-	// long distanciapixelsentrelineas = pixelesRutaX / numerodelineas;
 		for (int i = 0; i < numerodelineas + 1 ; i++) { 
-			long posicionlinea = (((long) i * distanciapixelsentrelineas * pixelesRutaX) / RaceConstants.RACE_LENGTH ) ;
-			 System.out.println("Linea " + i + ": "+ i * distanciapixelsentrelineas);
-			g.drawLine((int) (i * distanciapixelsentrelineas), (int) (pixelesRutaY), // X
-					(int) (i * distanciapixelsentrelineas), (int) (pixelesRutaY - 15));// Y
-			g.drawString(Integer.toString(i * distancia) + "m", (int) (i * distanciapixelsentrelineas),
-					(int) (pixelesRutaY - 18)); // Y
+			g.drawLine((int) (i * distanciapixelsentrelineas), (int) (pixelesRutaY), (int) (i * distanciapixelsentrelineas), (int) (pixelesRutaY - 15));// x,y x,y
+			g.drawString(Integer.toString(i * distancia) + "m", (int) (i * distanciapixelsentrelineas), (int) (pixelesRutaY - 18)); // Y
 		}
 	}
 
@@ -154,21 +146,14 @@ public class RaceSketch extends JPanel {
 	private void pintarSegmentosPave(Graphics g, Color color) {
 		for (int i = 0; i < paveSegments.size(); i++) {
 			int posicionInicioPave = paveSegments.get(i).getStart();
-		
 			long posicionlinea = ((long) posicionInicioPave * pixelesRutaX) / RaceConstants.RACE_LENGTH  ;
-			//long posicionlinea = ((long) posicionInicioPave *  RaceConstants.RACE_LENGTH /pixelesRutaX);
-			System.out.println(
-					"LINEA: " + i + " posicion start " + posicionInicioPave + "posicion linea: " + posicionlinea);
 			pintarSegmentosPorSuDificultad(g, paveSegments.get(i), (int) posicionlinea);
-
 			g.setColor(color);
 			g.drawLine((int) posicionlinea, 0, (int) posicionlinea, pixelesRutaY);
 			g.drawString(" " + Double.toString(paveSegments.get(i).getLength()), (int) posicionlinea, 10);
 			g.drawString(" (m)", (int) posicionlinea, 22);
 			g.drawString(" Dif. " + paveSegments.get(i).getDifficulty(), (int) posicionlinea, 35);
-
 		}
-
 	}
 
 	/***
