@@ -2,20 +2,12 @@ package com.app.prracesimulator.views;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Toolkit;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import com.app.prracesimulator.controllers.Controller;
 import com.app.prracesimulator.models.entities.Cyclist;
-import com.app.prracesimulator.models.entities.PaveSection;
-import com.app.prracesimulator.models.entities.RaceConstants;
 
 /**
  * Panel que contiene el canvas de la carrera
@@ -24,13 +16,14 @@ import com.app.prracesimulator.models.entities.RaceConstants;
  */
 public class RaceAnimationPanel extends JPanel {
 
-	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
 	private RaceSketch raceSketch;
+	
+	private static final int DistanciaCarreraPixeles = 17000;
 
 	public RaceAnimationPanel(Controller controller) {
 		super();
@@ -44,10 +37,9 @@ public class RaceAnimationPanel extends JPanel {
 	 * @param controller
 	 */
 	private void initComponents(Controller controller) {
-		int sizeX = 16000 ;
 		int sizeY = 349 ;		
-		raceSketch =  new RaceSketch(controller, sizeX, sizeY);
-		raceSketch.setPreferredSize(new Dimension(sizeX,sizeY));
+		raceSketch =  new RaceSketch(controller, DistanciaCarreraPixeles, sizeY);
+		raceSketch.setPreferredSize(new Dimension(DistanciaCarreraPixeles,sizeY));
 		this.add(raceSketch);
 	}
 

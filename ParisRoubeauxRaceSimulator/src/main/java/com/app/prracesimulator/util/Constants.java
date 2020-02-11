@@ -14,5 +14,6 @@ public class Constants {
 
     public static final String MAX_POW_OUTPUT_FILE_PATH = "./resources/maximal_power_output.csv";
     public static final String PAVE_SECTIONS_DATA_FILE_PATH = "./resources/pave_sections_data_test.csv";
+    public static final String CYCLIST_PATH = "src/main/java/img/cyclist.gif";
 
 }
