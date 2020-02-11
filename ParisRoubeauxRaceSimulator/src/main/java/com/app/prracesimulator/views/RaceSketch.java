@@ -32,6 +32,7 @@ public class RaceSketch extends JPanel {
 
 	private int pixelesRutaX = 0;
 	private int pixelesRutaY = 0;
+
 	/**
 	 * Constructor de la clase, que inicializa todos los valores necesarios para el
 	 * pintado de la carrera.
@@ -59,17 +60,15 @@ public class RaceSketch extends JPanel {
 		// Pinta la carretera con color verde
 		pintarCarretera(gbuffer, Color.decode("#0B610B"));
 
-		// Pinta separaciones kilom�tricas de negro
-		pintarSeparacionesKilometricas(gbuffer, Color.WHITE, 1);
+		pintarSegmentosPave(gbuffer, Color.WHITE);
 
-		pintarCurvas(gbuffer, Color.WHITE );
-		
+		// Pinta separaciones kilom�tricas de blanco
+		pintarSeparacionesKilometricas(gbuffer, Color.WHITE, 5);
+
 		// Actualiza el buffer en el canvas
 		g.drawImage(buffer, 0, 0, this);
-		
-		drawCyclists(g);
-		
 
+		drawCyclists(g);
 
 	}
 
@@ -78,8 +77,6 @@ public class RaceSketch extends JPanel {
 		super.update(g);
 		paint(g);
 	}
-
-	
 
 	/**
 	 * Dibuja el cielo sobre el buffer (Graphics) que sirve como imagen de fondo.
@@ -117,33 +114,64 @@ public class RaceSketch extends JPanel {
 		for (int i = 0; i < numerodelineas + 1; i++) {
 			g.drawLine((int) (i * distanciapixelsentrelineas), (int) (pixelesRutaX), // X
 					(int) (i * distanciapixelsentrelineas), (int) (pixelesRutaY - 15));// Y
-			g.drawString(Integer.toString(i * distancia), (int) (i * distanciapixelsentrelineas), (int) (pixelesRutaY - 18)); // Y
+			g.drawString(Integer.toString(i * distancia), (int) (i * distanciapixelsentrelineas),
+					(int) (pixelesRutaY - 18)); // Y
 		}
 	}
 
 	/**
-	 * Dibuja las marcas que denotan la posicion de las curvas sobre el croquis de la carrera
+	 * Dibuja las marcas que denotan la posicion de las curvas sobre el croquis de
+	 * la carrera
 	 * 
-	 * @param g     Graphics 
-	 * @param color Color 
+	 * @param g     Graphics
+	 * @param color Color
 	 */
-	private void pintarCurvas(Graphics g, Color color) {
-		g.setColor(color);
+	private void pintarSegmentosPave(Graphics g, Color color) {
 		for (int i = 0; i < paveSegments.size(); i++) {
-			int posicionInicioKm = paveSegments.get(i).getStart() / 1000;
-			int posicionlinea = posicionInicioKm * pixelesRutaX / RaceConstants.RACE_LENGTH;
-			//JOptionPane.showMessageDialog(null, "holaaa " + posicionInicioKm);
+			double posicionInicioKm = paveSegments.get(i).getStart() / 1000;
+			int posicionlinea = (int) posicionInicioKm * pixelesRutaX / RaceConstants.RACE_LENGTH;
+
+			pintarSegmentosPorSuDificultad(g, paveSegments.get(i), posicionlinea);
+
+			g.setColor(color);
 			g.drawLine(posicionlinea, 0, posicionlinea, pixelesRutaY);
-			g.drawString(" " + Double.toString(paveSegments.get(i).getLength()), posicionlinea, 10);
-			g.drawString(" (m/s)", posicionlinea, 22);
-			g.drawString(" max.", posicionlinea, 35);
-			
+			g.drawString(" " + Double.toString(paveSegments.get(i).getLength() / 1000), posicionlinea, 10);
+			g.drawString(" (km)", posicionlinea, 22);
+			g.drawString(" Dif. " + paveSegments.get(i).getDifficulty(), posicionlinea, 35);
+
 		}
 
 	}
-	
+
+	private void pintarSegmentosPorSuDificultad(Graphics g, PaveSection paveSection, int posicionlinea) {
+		switch (paveSection.getDifficulty()) {
+		case 1:
+			g.setColor(Color.decode("#F5DA81"));
+			break;
+		case 2:
+			g.setColor(Color.decode("#F7D358"));
+			break;
+		case 3:
+			g.setColor(Color.decode("#B18904"));
+			break;
+		case 4:
+			g.setColor(Color.decode("#FE9A2E"));
+			break;
+		case 5:
+			g.setColor(Color.decode("#FF4000"));
+			break;
+		}
+		if ((paveSection.getLength() / 1000) != 0) {
+			g.fillRect(posicionlinea, getHeight() / 2 + 10,
+					((paveSection.getLength() / 1000) * pixelesRutaX / RaceConstants.RACE_LENGTH), getHeight() / 2);
+		} else {
+			g.fillRect(posicionlinea, getHeight() / 2 + 10, paveSection.getLength() / 100, getHeight() / 2);
+		}
+	}
+
 	/**
 	 * Metodo que dibuja los ciclistas
+	 * 
 	 * @param g
 	 */
 	private void drawCyclists(Graphics g) {
@@ -174,10 +202,10 @@ public class RaceSketch extends JPanel {
 			default:
 				break;
 			}
-			g2D.drawOval((int) cyclist.getLocation().getX(), // ubicacion en x del ovalo
-					getHeight() / 2 - 40, // ubicacion en y del ovalo
+			g2D.fillOval(((int) cyclist.getLocation().getX())* pixelesRutaX / RaceConstants.RACE_LENGTH, // ubicacion en x del ovalo
+					getHeight() / 2 - 10, // ubicacion en y del ovalo
 					10, // ancho
-					50);// alto
+					20);// alto
 
 		}
 	}
@@ -190,6 +218,9 @@ public class RaceSketch extends JPanel {
 	 */
 	public void setRacersPositions(ArrayList<Cyclist> racers) {
 		this.racers = racers;
+		for (Cyclist cyclist : racers) {
+			System.out.println( "posicion ciclista " + cyclist.getId() + ":: " +  cyclist.getLocation().getX());
+		}
 		this.repaint();
 	}
 
