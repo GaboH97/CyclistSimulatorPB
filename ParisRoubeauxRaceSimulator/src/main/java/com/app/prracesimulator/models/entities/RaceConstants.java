@@ -27,8 +27,8 @@ public class RaceConstants {
 	public static double WC_MAX_1M = 11.50;
 	public static double WC_MIN_5M = 6.88;
 	public static double WC_MAX_5M = 7.60;
-	public static double WC_MIN_FT = 6.40;
-	public static double WC_MAX_FT = 5.78;
+	public static double WC_MIN_FT = 5.78;
+	public static double WC_MAX_FT = 6.40;
 	public static double EX_MIN_5S = 20.51;
 	public static double EX_MAX_5S = 22.41;
 	public static double EX_MIN_1M = 10.01;
