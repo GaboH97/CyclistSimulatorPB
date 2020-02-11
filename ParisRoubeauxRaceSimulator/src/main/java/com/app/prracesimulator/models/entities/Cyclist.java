@@ -71,7 +71,6 @@ public class Cyclist implements Movable {
 	public void move() {
 		
 		// se divide en 3.6 pues la velocidad esta en km/h y se necesita en m/s
-
 		this.setVelocityMS(getVelocityAccordingFormKmH() / 3.6);
 		
 		this.location.setLocation(this.location.getX() + velocityMS, this.location.getY());

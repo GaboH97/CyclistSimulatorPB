@@ -155,7 +155,6 @@ public class Race {
 	 */
 	public double getAdjustedFatigueAccordingToPhenomena(Cyclist cyclist) {
 
-		
 		//METER LA FATIGA DE ACUERDO A LA VELOCIDAD
 		
 		Optional<PaveSection> paveSectionOp = getPaveSectionCyclistIsIn(cyclist);
@@ -181,8 +180,7 @@ public class Race {
 				adjustedFatigue += RaceConstants.FATIGUE_SCALE_FACTOR_5S_PAVE;
 				break;
 			} 
-			
-			adjustedFatigue = adjustFatiqueFactorAccordingToWeightAndPaveSection(cyclist, paveSection);
+			//adjustedFatigue = adjustFatiqueFactorAccordingToWeightAndPaveSection(cyclist, paveSection);
 		}
 		return adjustedFatigue;
 	}

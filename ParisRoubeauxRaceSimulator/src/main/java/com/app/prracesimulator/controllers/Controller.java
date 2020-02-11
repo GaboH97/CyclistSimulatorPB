@@ -74,7 +74,7 @@ public class Controller implements ActionListener {
 	public void simulate() {
 		this.mainWindow.setVisible(true);
 		this.simulationVariablesDialog.setVisible(false);
-		changeSettingsSimulation();
+		//changeSettingsSimulation();
 		this.race.getRacers().forEach(System.out::println);
 		System.out.println("------------");
 		TimerTask task = new TimerTask() {
@@ -83,7 +83,7 @@ public class Controller implements ActionListener {
 				updateWorld();
 			}
 		};
-		EditablePeriodTimerTask timerTask = new EditablePeriodTimerTask(task, () -> 10L);
+		EditablePeriodTimerTask timerTask = new EditablePeriodTimerTask(task, () -> 2000L);
 		timerTask.run();
 	}
 
@@ -143,13 +143,14 @@ public class Controller implements ActionListener {
 			// AJUSTAR DE ACUERDO A DISTANCIA RESPECTO AL SIGUIENTE MEJOR CICLISTA
 			race.getRacers().forEach(race::adjustCyclistFatigueAccordingToClosenesToNextBestCyclist);
 
-			System.out.println("---------- FATIGUE ADJUSTMENTS -------------");
 
 //			race.getRacers().forEach(cyclist -> {
 //				double unadjustedFatigue = cyclist.getFatigue();
 //				double adjustedFatigue = race.getAdjustedFatigueAccordingToPhenomena(cyclist);
 //				System.out.println("Cyclist " + cyclist.getId() + ": " + unadjustedFatigue + " -> " + adjustedFatigue);
 //			});
+			System.out.println("RACERS");
+			race.printAllRacers();
 
 			mainWindow.setRacers(race.getRacers());
 
