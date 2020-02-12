@@ -26,7 +26,7 @@ public class TopCyclistPanel extends JPanel {
 	private JTable table;
 	static Object[][] lista;
 
-	public TopCyclistPanel(Controller controller) {
+	public TopCyclistPanel() {
 		setBackground(Color.WHITE);
 		this.add(new JLabel("Top 10"));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -65,6 +65,19 @@ public class TopCyclistPanel extends JPanel {
 		repaint();
 		revalidate();
 	}
+
+	public void setRacersToFinaly(ArrayList<Cyclist> racers) {
+		for (int i = 0; i < racers.size(); i++) {
+			this.lista[i][0] = (i + 1) + " - Ciclista" + racers.get(i).getId();
+			this.lista[i][1] = racers.get(i).getCyclistState();
+			this.lista[i][2] = racers.get(i).getFitnessFactor();
+			this.lista[i][3] = racers.get(i).getVelocityAccordingFormKmH();
+			this.lista[i][4] = racers.get(i).getFatigue();
+		}
+		table.getColumnModel().getColumn(1).setCellRenderer(new ImageRenderer());
+		repaint();
+		revalidate();
+	}
 }
 
 class MyTableModel extends AbstractTableModel {
@@ -93,9 +106,7 @@ class MyTableModel extends AbstractTableModel {
 }
 
 class ImageRenderer extends DefaultTableCellRenderer {
-
 	private static final long serialVersionUID = 1L;
-
 	JLabel lbl = new JLabel();
 
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
@@ -103,7 +114,7 @@ class ImageRenderer extends DefaultTableCellRenderer {
 		if (value != null) {
 			ImageIcon icon = new ImageIcon(value.toString().equals(CyclistState.DEQUALIFIED) ? Constants.DEQUALIFIED
 					: value.toString().equals(CyclistState.FINISHER) ? Constants.IMG_FINISHER : Constants.RACING);
-			lbl.setIcon(icon);			
+			lbl.setIcon(icon);
 		}
 		return lbl;
 	}

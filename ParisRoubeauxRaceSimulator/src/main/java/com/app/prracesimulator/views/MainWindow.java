@@ -55,7 +55,7 @@ public class MainWindow extends JFrame {
 		scrollcompetitors.setBounds(0, 381, (int)(screenSize.getWidth()), 275);
 		pnCenter.add(scrollcompetitors);
 
-		topCyclistPanel = new TopCyclistPanel(controller);
+		topCyclistPanel = new TopCyclistPanel();
 		JScrollPane scrollTopCyclist = new JScrollPane(topCyclistPanel);
 		scrollTopCyclist.getVerticalScrollBar().setUnitIncrement(15);
 		scrollTopCyclist.setBounds((int)(screenSize.getWidth() * .8) + 1, 0, (int)(screenSize.getWidth() * .2), 380);

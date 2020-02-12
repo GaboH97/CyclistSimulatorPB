@@ -5,6 +5,7 @@ import com.app.prracesimulator.models.entities.Race;
 import com.app.prracesimulator.models.entities.RaceConstants;
 import com.app.prracesimulator.util.EditablePeriodTimerTask;
 import com.app.prracesimulator.util.RaceTimeTicker;
+import com.app.prracesimulator.views.FinalReportDialog;
 import com.app.prracesimulator.views.MainWindow;
 import com.app.prracesimulator.views.SimulationVariablesDialog;
 
@@ -150,7 +151,7 @@ public class Controller implements ActionListener {
 			this.race.getRacers().forEach(System.out::println);
 
 			System.out.println("------------");
-
+			new FinalReportDialog(race.getRacers());
 			try {
 				Thread.sleep(100000L);
 			} catch (InterruptedException e) {
