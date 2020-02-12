@@ -63,7 +63,7 @@ public class RaceConstants {
     public static double FATIGUE_SCALE_FACTOR_2S_PAVE = 0.0166;
     public static double FATIGUE_SCALE_FACTOR_3S_PAVE = 0.0249;
     public static double FATIGUE_SCALE_FACTOR_4S_PAVE = 0.0332;
-    public static double FATIGUE_SCALE_FACTOR_5S_PAVE = 0.0415;
+    public static double FATIGUE_SCALE_FACTOR_5S_PAVE = 0.5;
    
     
     //Corresponde a la velocidad mínima que puede tener un ciclista de movimiento para no ser considerado como DESCALIFICADO

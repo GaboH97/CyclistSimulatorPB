@@ -3,6 +3,7 @@ package com.app.prracesimulator.models.entities;
 import com.app.cyclistsimulatorpb.util.DataExtractor;
 import com.app.prracesimulator.util.Constants;
 import java.awt.geom.Point2D;
+import java.time.LocalTime;
 import java.util.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -200,7 +201,8 @@ public class Race {
 	 */
 	public void adjustCyclistFatigueAccordingToClosenesToNextBestCyclist(Cyclist cyclist) {
 		cyclist.setFatigue(cyclist.getFatigue()
-				- ((1 / (5 * getDistanceToNextBestCyclist(cyclist.getId())))* (cyclist.getVelocityMS()* 3.6)) / RaceConstants.RESTENESS_FACTOR);
+				- ((1 / (5 * getDistanceToNextBestCyclist(cyclist.getId()))) * (cyclist.getVelocityMS() * 3.6))
+						/ RaceConstants.RESTENESS_FACTOR);
 	}
 
 	/**
@@ -231,19 +233,25 @@ public class Race {
 	public void sortRacersAtTheEnd() {
 
 		Comparator<Cyclist> compareByCyclistState = Comparator.comparing(Cyclist::getCyclistState);
-		Comparator<Cyclist> compareByCyclistLocation = Comparator.comparing(Cyclist::getLocationOnXAxis).reversed();
-
-		Collections.sort(racersAtTheEnd, compareByCyclistState.thenComparing(compareByCyclistLocation));
+		Comparator<Cyclist> compareByCyclistArrivalTime = Comparator.comparing(Cyclist::getArrivalTime);
+		Collections.sort(racersAtTheEnd, compareByCyclistState.thenComparing(compareByCyclistArrivalTime));
 	}
 
 //	public static void main(String[] args) {
 //		Race race = new Race();
+//
+//		race.getRacers().forEach(r -> {
+//			CyclistState c = new Random().nextBoolean()?CyclistState.FINISHER:CyclistState.DEQUALIFIED;
+//			r.setCyclistState(c);
+//			r.setArrivalTime(r.getCyclistState().equals(CyclistState.FINISHER)?LocalTime.ofSecondOfDay(new Random().nextInt(10000)):LocalTime.MIN);
+//		});
+//
 //		race.setRacersAtTheEnd(race.getRacers());
 //		System.out.println("Wuthout order");
 //		race.getRacersAtTheEnd().forEach(System.out::println);
 //		race.sortRacersAtTheEnd();
 //		System.out.println("Ordered order");
 //		race.getRacersAtTheEnd().forEach(System.out::println);
-//		
+//
 //	}
 }

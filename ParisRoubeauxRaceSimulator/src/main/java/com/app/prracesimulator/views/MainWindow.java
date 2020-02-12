@@ -3,18 +3,22 @@ package com.app.prracesimulator.views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import com.app.prracesimulator.controllers.Controller;
 import com.app.prracesimulator.models.entities.Cyclist;
+import com.app.prracesimulator.util.RaceTimeTicker;
 
 public class MainWindow extends JFrame {
 
@@ -22,6 +26,7 @@ public class MainWindow extends JFrame {
 	private RaceAnimationPanel raceAnimationPanel;
 	private CompetitorsPanel competitorsPanel;
 	private TopCyclistPanel topCyclistPanel;
+	private JLabel lbReloj;
 
 	public MainWindow(Controller controller) {
 		designWindow();
@@ -77,7 +82,6 @@ public class MainWindow extends JFrame {
 		scrollcompetitors.setBorder(null);
 		scrollcompetitors.getVerticalScrollBar().setUnitIncrement(15);
 		scrollcompetitors.setBounds(0, 381, (int)(screenSize.getWidth()), 275);
-	
 		pnCenter.add(scrollcompetitors);
 
 		topCyclistPanel = new TopCyclistPanel(controller);
@@ -88,11 +92,22 @@ public class MainWindow extends JFrame {
 		add(pnCenter, BorderLayout.CENTER);
 
 		JPanel pnTitle = new JPanel();
+		pnTitle.setLayout(new GridLayout(2,1,0,10));
+		
 		pnTitle.setBackground(Color.WHITE);
-		JLabel lbTitlePanel = new JLabel("Simulación Carrera Paris Roubaix");
+		JLabel lbTitlePanel = new JLabel("Simulación Carrera Paris Roubaix", SwingConstants.CENTER);
         lbTitlePanel.setFont(new java.awt.Font("Tahoma", 1, 18));
         lbTitlePanel.setForeground(Color.decode("#be0027"));
-        pnTitle.add(lbTitlePanel, BorderLayout.NORTH);
+        
+     
+		
+        pnTitle.add(lbTitlePanel);
+	
+		lbReloj = new JLabel("  " + LocalTime.ofSecondOfDay(RaceTimeTicker.getInstance().getTime()).toString() + " Seg");
+        lbReloj.setFont(new java.awt.Font("Tahoma", 1, 18));
+        lbReloj.setForeground(Color.decode("#be0027"));
+        
+        pnTitle.add(lbReloj);
 		add(pnTitle, BorderLayout.NORTH);
 	}
 
@@ -123,6 +138,7 @@ public class MainWindow extends JFrame {
 		this.raceAnimationPanel.setRacersPositions(racers);
 		this.competitorsPanel.setRacers(racers);
 		this.topCyclistPanel.setRacers(racers);
+		lbReloj.setText("  " + LocalTime.ofSecondOfDay(RaceTimeTicker.getInstance().getTime()).toString() + " Seg");
 	}
 	
 

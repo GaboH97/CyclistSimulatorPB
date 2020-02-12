@@ -12,8 +12,10 @@ import lombok.Data;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalTime;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 /**
  * @author : Gabriel Huertas <gabriel970826@gmail.com> Date: 8/02/2020 Time:
@@ -35,6 +37,7 @@ public class Controller implements ActionListener {
 		this.raceTimeTicker = RaceTimeTicker.getInstance();
 		this.simulationVariablesDialog = new SimulationVariablesDialog(this);
 		this.mainWindow = new MainWindow(this);
+		this.mainWindow.setVisible(true);
 		setUpTimerTask();
 	}
 
@@ -112,6 +115,7 @@ public class Controller implements ActionListener {
 							&& !race.getRacersAtTheEnd().contains(cyclist)) {
 
 						cyclist.setCyclistState(CyclistState.FINISHER);
+						cyclist.setArrivalTime(LocalTime.ofSecondOfDay(RaceTimeTicker.getInstance().getTime()));
 						race.getRacersAtTheEnd().add(cyclist);
 
 					}
@@ -120,6 +124,8 @@ public class Controller implements ActionListener {
 							&& !race.getRacersAtTheEnd().contains(cyclist)) {
 
 						cyclist.setCyclistState(CyclistState.DEQUALIFIED);
+						cyclist.setArrivalTime(LocalTime.MIN);
+
 						race.getRacersAtTheEnd().add(cyclist);
 
 					}

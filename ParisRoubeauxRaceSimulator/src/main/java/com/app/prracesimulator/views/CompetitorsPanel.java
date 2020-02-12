@@ -3,6 +3,7 @@ package com.app.prracesimulator.views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.sound.midi.Receiver;
@@ -15,15 +16,18 @@ import javax.swing.SwingConstants;
 import com.app.prracesimulator.controllers.Controller;
 import com.app.prracesimulator.models.entities.Cyclist;
 import com.app.prracesimulator.models.entities.CyclistState;
+import com.app.prracesimulator.models.entities.RaceConstants;
 
 public class CompetitorsPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	public ArrayList<Cyclist> racers;
+	private ArrayList<CyclistView> racersView;
 	private JPanel jp;
 
 	public CompetitorsPanel(Controller controller) {
 		this.racers = controller.getRace().getRacers();
+		this.racersView =  new ArrayList<>();
 		initComponents(controller);
 		pintarListaCiclistas();
 	}
@@ -46,10 +50,17 @@ public class CompetitorsPanel extends JPanel {
 		this.add(pnTitle, BorderLayout.PAGE_START);
 
 		jp = new JPanel();
-		jp.setLayout(new GridLayout(racers.size() / 3 + 1, 3, 10, 20));
+		if(racers.size()  >= 5) {
+			jp.setLayout(new GridLayout(racers.size() / 2 + 1, 3, 10, 20));
+		}else {
+			jp.setLayout(new GridLayout(4, 1, 10, 20));
+		}
 		jp.setBackground(Color.WHITE);
 	}
 
+	/**
+	 * Metodo que pinta los ciclistas y asigna un progressbar de rendimiento para cada uno de ellos
+	 */
 	private void pintarListaCiclistas() {
 		for (Cyclist cyclist : this.racers) {
 			JLabel lbCyclist = new JLabel("   Ciclista" + cyclist.getId() + ": ", SwingConstants.CENTER);
@@ -60,12 +71,21 @@ public class CompetitorsPanel extends JPanel {
 			progressBar.setValue(0);
 			progressBar.setStringPainted(true);
 			jp.add(progressBar);
-
+			this.racersView.add(new CyclistView(cyclist, progressBar));
 		}
 		add(jp, BorderLayout.CENTER);
 	}
 
+	/**
+	 * Actualiza los progresos de los ciclistas
+	 * @param racers
+	 */
 	public void setRacers(ArrayList<Cyclist> racers) {
-
+		for (Cyclist cyclist : racers) {
+			this.racersView.get(cyclist.getId() - 1 ).getjProgressBar().setValue((int)cyclist.getLocation().getX() * 100 / RaceConstants.RACE_LENGTH);
+			DecimalFormat formato1 = new DecimalFormat("0.00");
+			this.racersView.get(cyclist.getId()- 1 ).getjProgressBar().setString((formato1.format((double)cyclist.getLocation().getX()*100/RaceConstants.RACE_LENGTH) + " %")); 
+		}
+		this.repaint();
 	}
 }
