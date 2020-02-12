@@ -17,7 +17,7 @@ public class RaceConstants {
 	/**
 	 * Cambiarlo a 3 ciclistas
 	 */
-	public static int NUMBER_OF_CYCLISTS = 5;
+	public static int NUMBER_OF_CYCLISTS = 10;
 
 	//------------------- MPO (MAXIMAL POWER OUTPUT) VALUES -------------------------
 	

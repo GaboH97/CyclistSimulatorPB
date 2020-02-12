@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import com.app.prracesimulator.controllers.Controller;
 import com.app.prracesimulator.models.entities.Cyclist;
+import com.app.prracesimulator.models.entities.CyclistState;
 import com.app.prracesimulator.util.Constants;
 
 public class TopCyclistPanel extends JPanel {
@@ -46,22 +47,21 @@ public class TopCyclistPanel extends JPanel {
 		if (racers.size() >= 10) {
 			for (int i = 0; i < 10; i++) {
 				this.lista[i][0] = (i + 1) + " - Ciclista" + racers.get(i).getId();
+				this.lista[i][1] = racers.get(i).getCyclistState();
 				this.lista[i][2] = racers.get(i).getFitnessFactor();
 				this.lista[i][3] = racers.get(i).getVelocityAccordingFormKmH();
 				this.lista[i][4] = racers.get(i).getFatigue();
-//			this.model.setValueAt(i, i, 0);
-//			this.model.setValueAt(racers.get(i).getFitnessFactor(), i, 2);
-//			this.model.setValueAt(racers.get(i).getVelocityAccordingFormKmH(), i, 3);
-//			this.model.setValueAt(racers.get(i).getFatigue(), i, 4);
 			}
 		} else {
 			for (int i = 0; i < racers.size(); i++) {
 				this.lista[i][0] = (i + 1) + " - Ciclista" + racers.get(i).getId();
+				this.lista[i][1] = racers.get(i).getCyclistState();
 				this.lista[i][2] = racers.get(i).getFitnessFactor();
 				this.lista[i][3] = racers.get(i).getVelocityAccordingFormKmH();
 				this.lista[i][4] = racers.get(i).getFatigue();
 			}
 		}
+		table.getColumnModel().getColumn(1).setCellRenderer(new ImageRenderer());
 		repaint();
 		revalidate();
 	}
@@ -98,12 +98,13 @@ class ImageRenderer extends DefaultTableCellRenderer {
 
 	JLabel lbl = new JLabel();
 
-	ImageIcon icon = new ImageIcon(Constants.DEQUALIFIED);
-
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 			int row, int column) {
-		lbl.setIcon(icon);
-		lbl.setText(value + "");
+		if (value != null) {
+			ImageIcon icon = new ImageIcon(value.toString().equals(CyclistState.DEQUALIFIED) ? Constants.DEQUALIFIED
+					: value.toString().equals(CyclistState.FINISHER) ? Constants.IMG_FINISHER : Constants.RACING);
+			lbl.setIcon(icon);			
+		}
 		return lbl;
 	}
 }

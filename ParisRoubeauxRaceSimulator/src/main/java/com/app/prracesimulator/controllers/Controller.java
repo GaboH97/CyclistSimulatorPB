@@ -16,7 +16,6 @@ import java.time.LocalTime;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 /**
  * @author : Gabriel Huertas <gabriel970826@gmail.com> Date: 8/02/2020 Time:
  *         2:25 p. m.
@@ -37,13 +36,11 @@ public class Controller implements ActionListener {
 		this.raceTimeTicker = RaceTimeTicker.getInstance();
 		this.simulationVariablesDialog = new SimulationVariablesDialog(this);
 		this.mainWindow = new MainWindow(this);
-		this.mainWindow.setVisible(true);
 		setUpTimerTask();
 	}
 
 	private void setUpTimerTask() {
 		this.timerTask = new TimerTask() {
-
 			@Override
 			public void run() {
 				updateWorld();
@@ -58,11 +55,6 @@ public class Controller implements ActionListener {
 			simulate();
 			break;
 		}
-	}
-
-	public void closeMainWindow() {
-		this.simulationVariablesDialog.setVisible(true);
-		this.mainWindow.setVisible(false);
 	}
 
 	/**

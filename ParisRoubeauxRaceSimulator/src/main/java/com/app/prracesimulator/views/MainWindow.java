@@ -34,36 +34,7 @@ public class MainWindow extends JFrame {
 		setExtendedState(MAXIMIZED_BOTH);
 		setLayout(new BorderLayout());
 		initialComponents(controller);
-		addWindowListener(new WindowListener() {
-			@Override
-			public void windowOpened(WindowEvent e) {
-			}
-
-			@Override
-			public void windowIconified(WindowEvent e) {
-			}
-
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-			}
-
-			@Override
-			public void windowDeactivated(WindowEvent e) {
-			}
-
-			@Override
-			public void windowClosing(WindowEvent e) {
-				controller.closeMainWindow();
-			}
-
-			@Override
-			public void windowClosed(WindowEvent e) {
-			}
-
-			@Override
-			public void windowActivated(WindowEvent e) {
-			}
-		});
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
 	private void initialComponents(Controller controller) {

@@ -102,7 +102,6 @@ public class SimulationVariablesDialog extends JFrame {
 	}
 
 	public String getjSpNumCiclistas() {
-		System.err.println(jSpNumCiclistas.getValue().toString().replace(".", ""));
 		return jSpNumCiclistas.getValue().toString().replace(".", "");
 	}
 
