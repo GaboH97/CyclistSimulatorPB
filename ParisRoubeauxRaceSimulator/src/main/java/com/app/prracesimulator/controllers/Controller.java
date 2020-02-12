@@ -74,7 +74,7 @@ public class Controller implements ActionListener {
 				updateWorld();
 			}
 		};
-		EditablePeriodTimerTask timerTask = new EditablePeriodTimerTask(task, () -> 200L);
+		EditablePeriodTimerTask timerTask = new EditablePeriodTimerTask(task, () -> 1L);
 		timerTask.run();
 	}
 
