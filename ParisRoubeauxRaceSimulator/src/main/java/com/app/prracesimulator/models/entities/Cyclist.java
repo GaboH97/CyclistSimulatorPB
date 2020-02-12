@@ -53,7 +53,6 @@ public class Cyclist implements Movable {
 	/**
 	 * En m/s
 	 */
-	@ToString.Exclude
 	private double velocityMS;
 
 	/**
@@ -166,6 +165,8 @@ public class Cyclist implements Movable {
 //		System.out.println("effort" + effortThatCanPerform);
 		double velocityAccordingFormKmH = Math.log10(effortThatCanPerform) * 20 + 20;
 //		System.out.println("velocityAccordingFormKMH " + velocityAccordingFormKmH);
+//		System.out.println("B "+velocityAccordingFormKmH);
+//		System.out.println("a"+velocityAccordingFormKmH/RaceConstants.TIREDNESS_FACTOR);
 		this.fatigue += velocityAccordingFormKmH / RaceConstants.TIREDNESS_FACTOR;
 //		System.out.println("fatigue" + this.fatigue);
 

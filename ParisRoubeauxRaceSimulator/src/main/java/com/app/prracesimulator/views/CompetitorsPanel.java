@@ -24,7 +24,6 @@ public class CompetitorsPanel extends JPanel {
 
 	public void setRacers(ArrayList<Cyclist> racers) {
 		removeAll();
-		System.err.println(racers.size());
 		for (Cyclist cyclist : racers) {
 			JLabel lbCyclist = new JLabel(".   Ciclista" + cyclist.getId());
 			lbCyclist.setForeground(cyclist.getCyclistState().equals(CyclistState.RACING) ? Color.BLUE
