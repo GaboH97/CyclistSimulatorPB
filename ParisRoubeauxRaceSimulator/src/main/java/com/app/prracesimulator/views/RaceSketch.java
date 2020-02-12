@@ -223,9 +223,9 @@ public class RaceSketch extends JPanel {
 	 */
 	public void setRacersPositions(ArrayList<Cyclist> racers) {
 		this.racers = racers;
-		for (Cyclist cyclist : racers) {
-			System.out.println("posicion ciclista " + cyclist.getId() + ":: " + cyclist.getLocation().getX());
-		}
+//		for (Cyclist cyclist : racers) {
+//			System.out.println("posicion ciclista " + cyclist.getId() + ":: " + cyclist.getLocation().getX());
+//		}
 		this.repaint();
 	}
 

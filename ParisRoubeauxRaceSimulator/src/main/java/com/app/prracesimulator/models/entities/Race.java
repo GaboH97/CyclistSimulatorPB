@@ -81,28 +81,28 @@ public class Race {
 	public void updateCyclistRankingPositions() {
 		this.racers.sort(Comparator.comparing(c -> -c.getLocation().getX()));
 	}
-	
+
 	/**
 	 * 
 	 * @param idCyclist
 	 * @return
 	 */
 	public double getDistanceToNextBestCyclist(int idCyclist) {
-		
+
 		Cyclist cyclist = this.racers.stream().filter(racer -> racer.getId() == idCyclist).findFirst().get();
-		
+
 		int cyclistIdx = this.racers.indexOf(cyclist);
-		//Esto sucede cuando es el primero de la lista
+		// Esto sucede cuando es el primero de la lista
 		if (cyclistIdx == 0) {
 			return Double.MAX_VALUE;
 		} else {
-		
+
 			Cyclist nextBestPositionedCyclist = this.racers.get(cyclistIdx - 1);
-			double distancia = nextBestPositionedCyclist.getLocation().getX()
-					- cyclist.getLocation().getX();
-			
-			//La distancia estará acotada a un mínimo de 0.2m, a partir de ahí, su distancia es despreciable
-			return (distancia < 0.2 ? 0.2 : distancia);
+			double distancia = nextBestPositionedCyclist.getLocation().getX() - cyclist.getLocation().getX();
+
+			// La distancia estará acotada a un mínimo de 0.2m, a partir de ahí, su
+			// distancia es despreciable
+			return distancia < 0.2 ? 0.2 : distancia;
 		}
 	}
 
@@ -140,31 +140,33 @@ public class Race {
 	public boolean hasFinished() {
 		return this.racersOriginal.size() == this.racersAtTheEnd.size();
 	}
-	
+
 	/**
 	 * Método que ajusta los valores de fatiga para todos los corredores
 	 */
 	public void adjustFatigueForAllRacers() {
-		this.racers.forEach(this::getAdjustedFatigueAccordingToPhenomena);
+		this.racers.forEach(this::adjustFatigue);
 	}
+
 	/**
-	 * Método que ajusta la fatiga de un ciclista de acuerdo a la posición donde se encuentre.
-	 * Puede darse el caso que no se encuentre en una sección de pavé, por lo que su factor de
-	 * fatiga se preserva. De no suceder ello, se escala la fatiga de acuerdo a un factor de es-
-	 * cala dado por la dificultad del segmento de pavé por donde el ciclista esté pasando
+	 * Método que ajusta la fatiga de un ciclista de acuerdo a la posición donde se
+	 * encuentre. Puede darse el caso que no se encuentre en una sección de pavé,
+	 * por lo que su factor de fatiga se preserva. De no suceder ello, se escala la
+	 * fatiga de acuerdo a un factor de es- cala dado por la dificultad del segmento
+	 * de pavé por donde el ciclista esté pasando
 	 * 
 	 * @param cyclist El ciclista en cuestión
 	 * @return El factor de fatiga ajustado
 	 */
-	public double getAdjustedFatigueAccordingToPhenomena(Cyclist cyclist) {
+	public void adjustFatigue(Cyclist cyclist) {
 
-		//METER LA FATIGA DE ACUERDO A LA VELOCIDAD
-		
+		// METER LA FATIGA DE ACUERDO A LA VELOCIDAD
+
 		Optional<PaveSection> paveSectionOp = getPaveSectionCyclistIsIn(cyclist);
+
 		double adjustedFatigue = cyclist.getFatigue();
 
 		if (paveSectionOp.isPresent()) {
-			System.out.println("pave!");
 			PaveSection paveSection = paveSectionOp.get();
 			switch (paveSection.getDifficulty()) {
 			case 1:
@@ -182,22 +184,25 @@ public class Race {
 			case 5:
 				adjustedFatigue += RaceConstants.FATIGUE_SCALE_FACTOR_5S_PAVE;
 				break;
-			} 
-			//adjustedFatigue = adjustFatiqueFactorAccordingToWeightAndPaveSection(cyclist, paveSection);
+			}
+			// adjustedFatigue = adjustFatiqueFactorAccordingToWeightAndPaveSection(cyclist,
+			// paveSection);
 		}
-		return adjustedFatigue;
+		cyclist.setFatigue(adjustedFatigue);
+
 	}
-	
+
 	/**
-	 * Método que ajusta la fatiga del ciclista de acuerdo a la distancia a la que se encuentre del
-	 * ciclista que se encuentre adelante.
+	 * Método que ajusta la fatiga del ciclista de acuerdo a la distancia a la que
+	 * se encuentre del ciclista que se encuentre adelante.
 	 * 
 	 * @param cyclist
 	 */
 	public void adjustCyclistFatigueAccordingToClosenesToNextBestCyclist(Cyclist cyclist) {
-		cyclist.setFatigue(cyclist.getFatigue() - (1 / (5 * getDistanceToNextBestCyclist(cyclist.getId()))));
+		cyclist.setFatigue(cyclist.getFatigue()
+				- ((1 / (5 * getDistanceToNextBestCyclist(cyclist.getId())))* (cyclist.getVelocityMS()* 3.6)) / RaceConstants.RESTENESS_FACTOR);
 	}
-	
+
 	/**
 	 * 
 	 * @param cyclist
@@ -205,14 +210,13 @@ public class Race {
 	 * @return
 	 */
 	private double adjustFatiqueFactorAccordingToWeightAndPaveSection(Cyclist cyclist, PaveSection paveSection) {
-		
+
 		double adjustedFatigue = cyclist.getFatigue();
-		
+
 		double fatigueFactorAdjustment = cyclist.getWeight() * paveSection.getDifficulty();
-		
+
 		return adjustedFatigue;
 	}
-	
 
 	/**
 	 * Método que imprime los ciclistas
@@ -220,26 +224,26 @@ public class Race {
 	public void printAllRacers() {
 		this.racers.forEach(System.out::println);
 	}
-	
+
 	/**
 	 * Método que ordena
 	 */
 	public void sortRacersAtTheEnd() {
-		
+
 		Comparator<Cyclist> compareByCyclistState = Comparator.comparing(Cyclist::getCyclistState);
 		Comparator<Cyclist> compareByCyclistLocation = Comparator.comparing(Cyclist::getLocationOnXAxis).reversed();
-		
+
 		Collections.sort(racersAtTheEnd, compareByCyclistState.thenComparing(compareByCyclistLocation));
 	}
-	
-	public static void main(String[] args) {
-		Race race = new Race();
-		race.setRacersAtTheEnd(race.getRacers());
-		System.out.println("Wuthout order");
-		race.getRacersAtTheEnd().forEach(System.out::println);
-		race.sortRacersAtTheEnd();
-		System.out.println("Ordered order");
-		race.getRacersAtTheEnd().forEach(System.out::println);
-		
-	}
+
+//	public static void main(String[] args) {
+//		Race race = new Race();
+//		race.setRacersAtTheEnd(race.getRacers());
+//		System.out.println("Wuthout order");
+//		race.getRacersAtTheEnd().forEach(System.out::println);
+//		race.sortRacersAtTheEnd();
+//		System.out.println("Ordered order");
+//		race.getRacersAtTheEnd().forEach(System.out::println);
+//		
+//	}
 }

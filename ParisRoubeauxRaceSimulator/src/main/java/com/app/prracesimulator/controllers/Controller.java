@@ -75,8 +75,9 @@ public class Controller implements ActionListener {
 		this.mainWindow.setVisible(true);
 		this.simulationVariablesDialog.setVisible(false);
 		//changeSettingsSimulation();
-		this.race.getRacers().forEach(System.out::println);
-		System.out.println("------------");
+		
+		this.race.printAllRacers();
+		System.out.println("----------------------");
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
@@ -149,8 +150,8 @@ public class Controller implements ActionListener {
 //				double adjustedFatigue = race.getAdjustedFatigueAccordingToPhenomena(cyclist);
 //				System.out.println("Cyclist " + cyclist.getId() + ": " + unadjustedFatigue + " -> " + adjustedFatigue);
 //			});
-			System.out.println("RACERS");
-			race.printAllRacers();
+//			System.out.println("RACERS");
+			//race.printAllRacers();
 
 			mainWindow.setRacers(race.getRacers());
 

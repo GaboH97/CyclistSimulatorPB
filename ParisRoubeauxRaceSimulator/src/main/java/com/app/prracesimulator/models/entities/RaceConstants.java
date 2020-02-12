@@ -17,7 +17,7 @@ public class RaceConstants {
 	/**
 	 * Cambiarlo a 3 ciclistas
 	 */
-	public static int NUMBER_OF_CYCLISTS = 20;
+	public static int NUMBER_OF_CYCLISTS = 5;
 
 	//------------------- MPO (MAXIMAL POWER OUTPUT) VALUES -------------------------
 	
@@ -40,12 +40,12 @@ public class RaceConstants {
 	
 	//---------------- PESOS DE CICLISTAS -----------------------
 	
-	public static double SP_WEIGHT_MIN = 56;
-	public static double SP_WEIGHT_MAX = 67;
+	public static double SP_WEIGHT_MIN = 78;
+	public static double SP_WEIGHT_MAX = 90;
 	public static double GP_WEIGHT_MIN = 67;
 	public static double GP_WEIGHT_MAX = 78;
-	public static double GT_WEIGHT_MIN = 78;
-	public static double GT_WEIGHT_MAX = 90;
+	public static double GT_WEIGHT_MIN = 56;
+	public static double GT_WEIGHT_MAX = 67;
 
 	//---------------------- FACTORES ----------------------
 	public static int MIN_FITNESS = 1; // Unidad escalar
@@ -53,17 +53,17 @@ public class RaceConstants {
 	public static int MIN_FATIGUE_INIT = 1; // Unidad escalar
 	public static int MAX_FATIGUE_INIT = 10; // Unidad escalar
 	
-    public static double TIREDNESS_FACTOR = 7200;//este factor no es multiplicativo sino de division
-    public static double RESTENESS_FACTOR = 1800;//este factor no es multiplicativo sino de division
+    public static double TIREDNESS_FACTOR = 3200;//este factor no es multiplicativo sino de division
+    public static double RESTENESS_FACTOR = 1600;//este factor no es multiplicativo sino de division
     
     
     //------------------ FACTOR DE ESCALA DE FATIGA DE ACUERDO A LA DIFICULTAD DEL PAVÉ -------------------
     
-    public static double FATIGUE_SCALE_FACTOR_1S_PAVE = 1.5;
-    public static double FATIGUE_SCALE_FACTOR_2S_PAVE = 2;
-    public static double FATIGUE_SCALE_FACTOR_3S_PAVE = 3;
-    public static double FATIGUE_SCALE_FACTOR_4S_PAVE = 4;
-    public static double FATIGUE_SCALE_FACTOR_5S_PAVE = 5;
+    public static double FATIGUE_SCALE_FACTOR_1S_PAVE = 0.01245;
+    public static double FATIGUE_SCALE_FACTOR_2S_PAVE = 0.0166;
+    public static double FATIGUE_SCALE_FACTOR_3S_PAVE = 0.0249;
+    public static double FATIGUE_SCALE_FACTOR_4S_PAVE = 0.0332;
+    public static double FATIGUE_SCALE_FACTOR_5S_PAVE = 0.0415;
    
     
     //Corresponde a la velocidad mínima que puede tener un ciclista de movimiento para no ser considerado como DESCALIFICADO
