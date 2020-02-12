@@ -1,6 +1,5 @@
 package com.app.prracesimulator.controllers;
 
-import com.app.prracesimulator.models.entities.Cyclist;
 import com.app.prracesimulator.models.entities.CyclistState;
 import com.app.prracesimulator.models.entities.Race;
 import com.app.prracesimulator.models.entities.RaceConstants;
@@ -36,8 +35,6 @@ public class Controller implements ActionListener {
 		this.raceTimeTicker = RaceTimeTicker.getInstance();
 		this.simulationVariablesDialog = new SimulationVariablesDialog(this);
 		this.mainWindow = new MainWindow(this);
-		this.mainWindow.setVisible(true);
-
 		setUpTimerTask();
 	}
 
@@ -57,9 +54,6 @@ public class Controller implements ActionListener {
 		case SIMULATE:
 			simulate();
 			break;
-		case CLOSE_MAIN_WINDOW:
-			closeMainWindow();
-			break;
 		}
 	}
 
@@ -74,8 +68,8 @@ public class Controller implements ActionListener {
 	public void simulate() {
 		this.mainWindow.setVisible(true);
 		this.simulationVariablesDialog.setVisible(false);
-		//changeSettingsSimulation();
-		
+		changeSettingsSimulation();
+
 		this.race.printAllRacers();
 		System.out.println("----------------------");
 		TimerTask task = new TimerTask() {
@@ -89,15 +83,14 @@ public class Controller implements ActionListener {
 	}
 
 	public void changeSettingsSimulation() {
-		RaceConstants.RACE_LENGTH = (int) simulationVariablesDialog.getjSpLongitud().getValue();
-		RaceConstants.HEAD_WIND = (int) simulationVariablesDialog.getjSpViento().getValue();
-		RaceConstants.NUMBER_OF_CYCLISTS = (int) simulationVariablesDialog.getjSpNumCiclistas().getValue();
-		RaceConstants.MIN_FITNESS = (int) simulationVariablesDialog.getjSpFitnessMin().getValue();
-		RaceConstants.MAX_FITNESS = (int) simulationVariablesDialog.getjSpFitnessMax().getValue();
-		RaceConstants.MIN_FATIGUE_INIT = (int) simulationVariablesDialog.getjSpFatigaMin().getValue();
-		RaceConstants.MAX_FATIGUE_INIT = (int) simulationVariablesDialog.getjSpFatigaMax().getValue();
-		RaceConstants.TIREDNESS_FACTOR = (int) simulationVariablesDialog.getjSpCansancio().getValue();
-		RaceConstants.RESTENESS_FACTOR = (int) simulationVariablesDialog.getjSpDescanso().getValue();
+		RaceConstants.RACE_LENGTH = Integer.parseInt(simulationVariablesDialog.getjSpLongitud());
+		RaceConstants.NUMBER_OF_CYCLISTS = Integer.parseInt(simulationVariablesDialog.getjSpNumCiclistas());
+		RaceConstants.MIN_FITNESS = Integer.parseInt(simulationVariablesDialog.getjSpFitnessMin());
+		RaceConstants.MAX_FITNESS = Integer.parseInt(simulationVariablesDialog.getjSpFitnessMax());
+		RaceConstants.MIN_FATIGUE_INIT = Integer.parseInt(simulationVariablesDialog.getjSpFatigaMin());
+		RaceConstants.MAX_FATIGUE_INIT = Integer.parseInt(simulationVariablesDialog.getjSpFatigaMax());
+		RaceConstants.TIREDNESS_FACTOR = Integer.parseInt(simulationVariablesDialog.getjSpCansancio());
+		RaceConstants.RESTENESS_FACTOR = Integer.parseInt(simulationVariablesDialog.getjSpDescanso());
 	}
 
 	/**
@@ -144,21 +137,20 @@ public class Controller implements ActionListener {
 			// AJUSTAR DE ACUERDO A DISTANCIA RESPECTO AL SIGUIENTE MEJOR CICLISTA
 			race.getRacers().forEach(race::adjustCyclistFatigueAccordingToClosenesToNextBestCyclist);
 
-
 //			race.getRacers().forEach(cyclist -> {
 //				double unadjustedFatigue = cyclist.getFatigue();
 //				double adjustedFatigue = race.getAdjustedFatigueAccordingToPhenomena(cyclist);
 //				System.out.println("Cyclist " + cyclist.getId() + ": " + unadjustedFatigue + " -> " + adjustedFatigue);
 //			});
 //			System.out.println("RACERS");
-			//race.printAllRacers();
+			// race.printAllRacers();
 
 			mainWindow.setRacers(race.getRacers());
 
 		} else {
 
 			this.race.getRacers().forEach(System.out::println);
-			
+
 			System.out.println("------------");
 
 			try {

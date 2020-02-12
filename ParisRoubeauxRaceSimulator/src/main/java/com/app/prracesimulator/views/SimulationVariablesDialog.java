@@ -8,13 +8,13 @@ import javax.swing.SwingConstants;
 
 import com.app.prracesimulator.controllers.Actions;
 import com.app.prracesimulator.controllers.Controller;
+import com.app.prracesimulator.models.entities.RaceConstants;
 
 public class SimulationVariablesDialog extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JButton btnIniciar;
 	private JSpinner jSpLongitud;
-	private JSpinner jSpViento;
 	private JSpinner jSpNumCiclistas;
 	private JSpinner jSpFitnessMax;
 	private JSpinner jSpFatigaMin;
@@ -38,54 +38,49 @@ public class SimulationVariablesDialog extends JFrame {
 		gridSystem.addExternalBorder(10, 0, 10, 0);
 		JLabel longitud = new JLabel("Longitud: ");
 		jSpLongitud = new JSpinner();
-		jSpLongitud.setValue(257);
+		jSpLongitud.setValue(RaceConstants.RACE_LENGTH);
 		add(longitud, gridSystem.insertComponent(1, 2, 6, 1));
 		add(jSpLongitud, gridSystem.insertComponent(1, 5, 5, 1));
 
-		JLabel viento = new JLabel("Viento: ");
-		jSpViento = new JSpinner();
-		add(viento, gridSystem.insertComponent(2, 2, 6, 1));
-		add(jSpViento, gridSystem.insertComponent(2, 5, 5, 1));
-
 		JLabel numCiclistas = new JLabel("# Ciclistas: ");
 		jSpNumCiclistas = new JSpinner();
-		jSpNumCiclistas.setValue(168);
+		jSpNumCiclistas.setValue(RaceConstants.NUMBER_OF_CYCLISTS);
 		add(numCiclistas, gridSystem.insertComponent(3, 2, 6, 1));
 		add(jSpNumCiclistas, gridSystem.insertComponent(3, 5, 5, 1));
 		JLabel fitness = new JLabel("Fitness ");
 		jSpFitnessMin = new JSpinner();
-		jSpFitnessMin.setValue(1);
-		
+		jSpFitnessMin.setValue(RaceConstants.MIN_FITNESS);
+
 		add(fitness, gridSystem.insertComponent(4, 2, 6, 1));
 		add(new JLabel("Min:", SwingConstants.RIGHT), gridSystem.insertComponent(5, 3, 1, 1));
 		add(jSpFitnessMin, gridSystem.insertComponent(5, 5, 1, 1));
 
 		jSpFitnessMax = new JSpinner();
-		jSpFitnessMax.setValue(100);
+		jSpFitnessMax.setValue(RaceConstants.MAX_FITNESS);
 		add(new JLabel("Max:"), gridSystem.insertComponent(5, 7, 1, 1));
 		add(jSpFitnessMax, gridSystem.insertComponent(5, 8, 1, 1));
 
-		JLabel fatiga = new JLabel("Fatiga ");
+		JLabel fatiga = new JLabel("Rango Fatiga Inicial ");
 		add(fatiga, gridSystem.insertComponent(6, 2, 6, 1));
 		jSpFatigaMin = new JSpinner();
-		jSpFatigaMin.setValue(1);
+		jSpFatigaMin.setValue(RaceConstants.MIN_FATIGUE_INIT);
 		add(new JLabel("Min:", SwingConstants.RIGHT), gridSystem.insertComponent(7, 3, 1, 1));
 		add(jSpFatigaMin, gridSystem.insertComponent(7, 5, 1, 1));
-		
+
 		jSpFatigaMax = new JSpinner();
-		jSpFatigaMax.setValue(10);
+		jSpFatigaMax.setValue(RaceConstants.MAX_FATIGUE_INIT);
 		add(new JLabel("Max:"), gridSystem.insertComponent(7, 7, 1, 1));
 		add(jSpFatigaMax, gridSystem.insertComponent(7, 8, 1, 1));
 
 		JLabel cansancio = new JLabel("Cansancio: ");
 		jSpCansancio = new JSpinner();
-		jSpCansancio.setValue(4);
+		jSpCansancio.setValue(RaceConstants.TIREDNESS_FACTOR);
 		add(cansancio, gridSystem.insertComponent(8, 2, 6, 1));
 		add(jSpCansancio, gridSystem.insertComponent(8, 5, 5, 1));
 
 		JLabel descanso = new JLabel("Descanso: ");
 		jSpDescanso = new JSpinner();
-		jSpDescanso.setValue(4);
+		jSpDescanso.setValue(RaceConstants.RESTENESS_FACTOR);
 		add(descanso, gridSystem.insertComponent(9, 2, 6, 1));
 		add(jSpDescanso, gridSystem.insertComponent(9, 5, 5, 1));
 
@@ -102,40 +97,37 @@ public class SimulationVariablesDialog extends JFrame {
 		btnIniciar.addActionListener(controller);
 	}
 
-	public JSpinner getjSpLongitud() {
-		return jSpLongitud;
+	public String getjSpLongitud() {
+		return jSpLongitud.getValue().toString().replace(".", "");
 	}
 
-	public JSpinner getjSpViento() {
-		return jSpViento;
+	public String getjSpNumCiclistas() {
+		System.err.println(jSpNumCiclistas.getValue().toString().replace(".", ""));
+		return jSpNumCiclistas.getValue().toString().replace(".", "");
 	}
 
-	public JSpinner getjSpNumCiclistas() {
-		return jSpNumCiclistas;
+	public String getjSpFitnessMax() {
+		return jSpFitnessMax.getValue().toString().replace(".", "");
 	}
 
-	public JSpinner getjSpFitnessMax() {
-		return jSpFitnessMax;
+	public String getjSpFatigaMin() {
+		return jSpFatigaMin.getValue().toString().replace(".", "");
 	}
 
-	public JSpinner getjSpFatigaMin() {
-		return jSpFatigaMin;
+	public String getjSpFitnessMin() {
+		return jSpFitnessMin.getValue().toString().replace(".", "");
 	}
 
-	public JSpinner getjSpFitnessMin() {
-		return jSpFitnessMin;
+	public String getjSpFatigaMax() {
+		return jSpFatigaMax.getValue().toString().replace(".", "");
 	}
 
-	public JSpinner getjSpFatigaMax() {
-		return jSpFatigaMax;
+	public String getjSpCansancio() {
+		return jSpCansancio.getValue().toString().replace(".", "");
 	}
 
-	public JSpinner getjSpCansancio() {
-		return jSpCansancio;
-	}
-
-	public JSpinner getjSpDescanso() {
-		return jSpDescanso;
+	public String getjSpDescanso() {
+		return jSpDescanso.getValue().toString().replace(".", "");
 	}
 
 	private static void designWindow() {
