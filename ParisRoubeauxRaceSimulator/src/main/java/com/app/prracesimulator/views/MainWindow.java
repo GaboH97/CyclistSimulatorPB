@@ -71,10 +71,13 @@ public class MainWindow extends JFrame {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		scroll.setBounds(0, 0, (int)(screenSize.getWidth() * .8), 380);
 		pnCenter.add(scroll);
+		
 		competitorsPanel = new CompetitorsPanel(controller);
 		JScrollPane scrollcompetitors = new JScrollPane(competitorsPanel);
+		scrollcompetitors.setBorder(null);
 		scrollcompetitors.getVerticalScrollBar().setUnitIncrement(15);
-		scrollcompetitors.setBounds(0, 381, (int)(screenSize.getWidth()), 245);
+		scrollcompetitors.setBounds(0, 381, (int)(screenSize.getWidth()), 275);
+	
 		pnCenter.add(scrollcompetitors);
 
 		topCyclistPanel = new TopCyclistPanel(controller);
@@ -85,7 +88,11 @@ public class MainWindow extends JFrame {
 		add(pnCenter, BorderLayout.CENTER);
 
 		JPanel pnTitle = new JPanel();
-		pnTitle.add(new JLabel("Simulación Carrera Paris Roubaix"), BorderLayout.NORTH);
+		pnTitle.setBackground(Color.WHITE);
+		JLabel lbTitlePanel = new JLabel("Simulación Carrera Paris Roubaix");
+        lbTitlePanel.setFont(new java.awt.Font("Tahoma", 1, 18));
+        lbTitlePanel.setForeground(Color.decode("#be0027"));
+        pnTitle.add(lbTitlePanel, BorderLayout.NORTH);
 		add(pnTitle, BorderLayout.NORTH);
 	}
 
@@ -117,4 +124,6 @@ public class MainWindow extends JFrame {
 		this.competitorsPanel.setRacers(racers);
 		this.topCyclistPanel.setRacers(racers);
 	}
+	
+
 }
