@@ -61,7 +61,7 @@ public class TopCyclistPanel extends JPanel {
 				this.lista[i][4] = racers.get(i).getFatigue();
 			}
 		}
-		table.getColumnModel().getColumn(1).setCellRenderer(new ImageRenderer());
+//		table.getColumnModel().getColumn(1).setCellRenderer(new ImageRenderer());
 		repaint();
 		revalidate();
 	}
@@ -112,8 +112,11 @@ class ImageRenderer extends DefaultTableCellRenderer {
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 			int row, int column) {
 		if (value != null) {
-			ImageIcon icon = new ImageIcon(value.toString().equals(CyclistState.DEQUALIFIED) ? Constants.DEQUALIFIED
-					: value.toString().equals(CyclistState.FINISHER) ? Constants.IMG_FINISHER : Constants.RACING);
+//			System.err.println(CyclistState.DEQUALIFIED.name());
+			ImageIcon icon = new ImageIcon(
+					value.toString().equals(CyclistState.DEQUALIFIED.name()) ? Constants.DEQUALIFIED
+							: value.toString().equals(CyclistState.FINISHER.name()) ? Constants.IMG_FINISHER
+									: Constants.RACING);
 			lbl.setIcon(icon);
 		}
 		return lbl;
