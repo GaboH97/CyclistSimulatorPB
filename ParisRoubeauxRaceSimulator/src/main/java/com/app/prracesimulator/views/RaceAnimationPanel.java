@@ -1,9 +1,11 @@
 package com.app.prracesimulator.views;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.app.prracesimulator.controllers.Controller;
@@ -37,10 +39,11 @@ public class RaceAnimationPanel extends JPanel {
 	 * @param controller
 	 */
 	private void initComponents(Controller controller) {
-		int sizeY = 349 ;		
+		setLayout(new BorderLayout());
+		int sizeY = 357 ;		
 		raceSketch =  new RaceSketch(controller, DistanciaCarreraPixeles, sizeY);
 		raceSketch.setPreferredSize(new Dimension(DistanciaCarreraPixeles,sizeY));
-		this.add(raceSketch);
+		this.add(raceSketch, BorderLayout.CENTER);
 	}
 
 
