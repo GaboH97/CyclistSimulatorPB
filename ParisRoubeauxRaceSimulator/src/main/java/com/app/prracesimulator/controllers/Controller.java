@@ -123,7 +123,6 @@ public class Controller implements ActionListener {
 
 					}
 					// Aquí avanza al siguiente instante de tiempo
-					raceTimeTicker.advance();
 				}
 			});
 
@@ -143,6 +142,7 @@ public class Controller implements ActionListener {
 //			});
 //			System.out.println("RACERS");
 			// race.printAllRacers();
+			raceTimeTicker.advance();
 
 			mainWindow.setRacers(race.getRacers());
 

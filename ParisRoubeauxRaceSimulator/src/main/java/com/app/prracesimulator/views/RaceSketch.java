@@ -193,25 +193,34 @@ public class RaceSketch extends JPanel {
 	private void drawCyclists(Graphics g) {
 		Graphics2D g2D = (Graphics2D) g;
 		// aca se pintan los ciclistas
-		for (Cyclist cyclist : racers) {
-			// segun el estado del ciclista se debe pintar de un color u otro
-			switch (cyclist.getCyclistState()) {
-			case RACING:
-				g2D.setColor(Color.ORANGE);
-				break;
-			case FINISHER:
-				g2D.setColor(Color.GREEN);
-				break;
-			case DEQUALIFIED:
-				g2D.setColor(Color.RED);
-				break;
+		try {
+			for (Cyclist cyclist : racers) {
+				// segun el estado del ciclista se debe pintar de un color u otro
+				switch (cyclist.getCyclistState()) {
+				case RACING:
+					g2D.setColor(Color.decode("#062235"));
+					break;
+				case FINISHER:
+					g2D.setColor(Color.GREEN);
+					break;
+				case DEQUALIFIED:
+					g2D.setColor(Color.RED);
+					break;
 
-			default:
-				break;
+				default:
+					break;
+				}
+				g.drawString(Integer.toString(cyclist.getId()), (int) cyclist.getLocation().getX() * pixelesRutaX / RaceConstants.RACE_LENGTH,
+						(int) getHeight() / 2 - 25);
+				g.drawImage(imagenredimensionada, (int) cyclist.getLocation().getX() * pixelesRutaX / RaceConstants.RACE_LENGTH, getHeight() / 2 - 25, this);
+				//llegan a la meta
+				if(cyclist.getLocation().getX() >= RaceConstants.RACE_LENGTH) {
+				g.drawString(Integer.toString(cyclist.getId()),  pixelesRutaX - 40 ,
+							(int) getHeight() / 2 - 25);
+					g.drawImage(imagenredimensionada, (int)  pixelesRutaX - 40, getHeight() / 2 - 25, this);
+				}
 			}
-			g.drawString(Integer.toString(cyclist.getId()), (int) cyclist.getLocation().getX() * pixelesRutaX / RaceConstants.RACE_LENGTH,
-					(int) getHeight() / 2 - 25);
-			g.drawImage(imagenredimensionada, (int) cyclist.getLocation().getX() * pixelesRutaX / RaceConstants.RACE_LENGTH, getHeight() / 2 - 25, this);
+		} catch (Exception e) {
 		}
 	}
 
