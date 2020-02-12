@@ -34,7 +34,7 @@ public class TopCyclistPanel extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		model = new MyTableModel();
-		lista = new Object[10][5];
+		lista = new Object[10][6];
 
 		table = new JTable(model);
 		table.setRowHeight(20);
@@ -69,13 +69,18 @@ public class TopCyclistPanel extends JPanel {
 	}
 
 	public void setRacersToFinaly(ArrayList<Cyclist> racers) {
-		lbTitle.setText("REPORTE FINAL");
+		lbTitle.setText("REPORTE");
+		model.setRows(racers.size());
+		model.setCols(6);
+		model.setColumnNames(new String[] { "#", "Estado", "Fitness", "Velocidad", "Fatiga", "Tiempo de Llegada" });
+		lista = new Object[racers.size()][model.getColumnCount()];
 		for (int i = 0; i < racers.size(); i++) {
 			this.lista[i][0] = (i + 1) + " - Ciclista" + racers.get(i).getId();
 			this.lista[i][1] = racers.get(i).getCyclistState();
 			this.lista[i][2] = racers.get(i).getFitnessFactor();
 			this.lista[i][3] = racers.get(i).getVelocityAccordingFormKmH();
 			this.lista[i][4] = racers.get(i).getFatigue();
+			this.lista[i][5] = racers.get(i).getArrivalTime();
 		}
 		table.getColumnModel().getColumn(1).setCellRenderer(new ImageRenderer());
 		repaint();
@@ -84,10 +89,21 @@ public class TopCyclistPanel extends JPanel {
 }
 
 class MyTableModel extends AbstractTableModel {
-	String[] columnNames = { "#", "Estado", "Fitness", "Velocidad", "Fatiga" };
+	String[] columnNames = { "#", "Estado", "Fitness", "Velocidad", "Fatiga", "Tiempo de Llegada" };
+	private int rows;
+	private int cols;
+
+	public MyTableModel() {
+		this.rows = 10;
+		this.cols = columnNames.length;
+	}
 
 	public String getColumnName(int col) {
 		return columnNames[col].toString();
+	}
+
+	public void setColumnNames(String[] columnNames) {
+		this.columnNames = columnNames;
 	}
 
 	public boolean isCellEditable(int row, int col) {
@@ -95,11 +111,19 @@ class MyTableModel extends AbstractTableModel {
 	}
 
 	public int getColumnCount() {
-		return 5;
+		return cols;
 	}
 
 	public int getRowCount() {
-		return 10;
+		return rows;
+	}
+
+	public void setRows(int rows) {
+		this.rows = rows;
+	}
+
+	public void setCols(int cols) {
+		this.cols = cols;
 	}
 
 	@Override
