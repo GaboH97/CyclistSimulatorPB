@@ -132,7 +132,7 @@ public class RaceSketch extends JPanel {
 		 long distanciapixelsentrelineas = (long)  distancia * pixelesRutaX / RaceConstants.RACE_LENGTH;
 		for (int i = 0; i < numerodelineas + 1 ; i++) { 
 			g.drawLine((int) (i * distanciapixelsentrelineas), (int) (pixelesRutaY), (int) (i * distanciapixelsentrelineas), (int) (pixelesRutaY - 15));// x,y x,y
-			g.drawString(Integer.toString(i * distancia) + "m", (int) (i * distanciapixelsentrelineas), (int) (pixelesRutaY - 18)); // Y
+			g.drawString(Integer.toString(i * distancia / 1000) + "km", (int) (i * distanciapixelsentrelineas), (int) (pixelesRutaY - 18)); // Y
 		}
 	}
 
@@ -209,9 +209,9 @@ public class RaceSketch extends JPanel {
 			default:
 				break;
 			}
-			g.drawString(Integer.toString(cyclist.getId()), (int) cyclist.getLocation().getX(),
+			g.drawString(Integer.toString(cyclist.getId()), (int) cyclist.getLocation().getX() * pixelesRutaX / RaceConstants.RACE_LENGTH,
 					(int) getHeight() / 2 - 25);
-			g.drawImage(imagenredimensionada, (int) cyclist.getLocation().getX(), getHeight() / 2 - 25, this);
+			g.drawImage(imagenredimensionada, (int) cyclist.getLocation().getX() * pixelesRutaX / RaceConstants.RACE_LENGTH, getHeight() / 2 - 25, this);
 		}
 	}
 
