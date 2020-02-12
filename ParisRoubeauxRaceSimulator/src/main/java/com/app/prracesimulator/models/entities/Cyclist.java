@@ -7,6 +7,7 @@ import lombok.ToString;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.beans.Transient;
+import java.time.LocalTime;
 import java.util.Random;
 
 import com.app.prracesimulator.util.Util;
@@ -60,6 +61,11 @@ public class Cyclist implements Movable {
 	 */
 
 	private CyclistState cyclistState;
+	
+	/**
+	 * Instante de llegada, en horas, minutos y segundos
+	 */
+	private LocalTime arrivalTime;
 
 	/**
 	 * Método que desplaza la
