@@ -129,6 +129,8 @@ public class Controller implements ActionListener {
 							&& !race.getRacersAtTheEnd().contains(cyclist)) {
 
 						cyclist.setCyclistState(CyclistState.DEQUALIFIED);
+						cyclist.setArrivalTime(LocalTime.MIN);
+
 						race.getRacersAtTheEnd().add(cyclist);
 
 					}
