@@ -12,7 +12,7 @@ public class RaceConstants {
 	/**
 	 * Longitud de la carrera en metros (Paris-Roubaix Edicion 2019)
 	 */
-	public static int RACE_LENGTH = 100000;
+	public static int RACE_LENGTH = 257000;
 	public static int HEAD_WIND = 0;
 	/**
 	 * Cambiarlo a 3 ciclistas
