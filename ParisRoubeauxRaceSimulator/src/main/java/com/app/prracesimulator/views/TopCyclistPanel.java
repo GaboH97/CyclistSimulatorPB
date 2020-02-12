@@ -25,10 +25,12 @@ public class TopCyclistPanel extends JPanel {
 	private MyTableModel model;
 	private JTable table;
 	static Object[][] lista;
+	private JLabel lbTitle;
 
 	public TopCyclistPanel() {
 		setBackground(Color.WHITE);
-		this.add(new JLabel("Top 10"));
+		lbTitle = new JLabel("Top 10");
+		this.add(lbTitle);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		model = new MyTableModel();
@@ -67,6 +69,7 @@ public class TopCyclistPanel extends JPanel {
 	}
 
 	public void setRacersToFinaly(ArrayList<Cyclist> racers) {
+		lbTitle.setText("REPORTE FINAL");
 		for (int i = 0; i < racers.size(); i++) {
 			this.lista[i][0] = (i + 1) + " - Ciclista" + racers.get(i).getId();
 			this.lista[i][1] = racers.get(i).getCyclistState();
